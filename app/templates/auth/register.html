@@ -1,0 +1,60 @@
+{% extends 'base.html' %} {% block content %}
+<div
+  class="container d-flex justify-content-center align-items-center"
+  style="min-height: 80vh"
+>
+  <div class="col-md-5 col-lg-4">
+    <div class="featured-card">
+      <div class="text-center mb-4">
+        <div class="badge-dev mb-3" style="background: #ecfdf5; color: #10b981">
+          Novo Membro
+        </div>
+        <h2 class="fw-bold">Criar Conta</h2>
+        <p class="text-muted small">
+          Junte-se à nossa comunidade de desenvolvedores
+        </p>
+      </div>
+
+      <form method="POST">
+        <div class="mb-3">
+          <label class="form-label fw-semibold small">Escolha um Usuário</label>
+          <input
+            name="username"
+            class="form-control"
+            placeholder="Ex: dev_joao"
+            required
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label fw-semibold small">Defina uma Senha</label>
+          <input
+            type="password"
+            name="password"
+            class="form-control"
+            placeholder="••••••••"
+            required
+          />
+        </div>
+
+        <div class="d-grid mt-4">
+          <button class="btn btn-primary btn-lg shadow-sm">
+            Criar minha conta
+          </button>
+        </div>
+      </form>
+
+      <div class="text-center mt-4 border-top pt-3">
+        <p class="text-muted small mb-0">
+          Já possui acesso?
+          <a
+            href="{{ url_for('auth.login') }}"
+            class="text-primary fw-bold text-decoration-none"
+            >Fazer Login</a
+          >
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<article class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+
+      {% if post.image_url %}
+      <div class="post-hero mb-4">
+        <img src="{{ post.image_url }}" alt="{{ post.title }}">
+      </div>
+      {% endif %}
+
+      <header class="mb-5 text-center">
+        <span class="badge bg-primary mb-3">
+          {{ post.category.name }}
+        </span>
+
+        <h1 class="fw-bold display-5">
+          {{ post.title }}
+        </h1>
+
+        <p class="text-muted">
+          Publicado em {{ post.created_at.strftime('%d/%m/%Y') }}
+        </p>
+
+        <hr />
+      </header>
+
+      <div class="post-body fs-5">
+        {{ post.content | safe }}
+      </div>
+
+    </div>
+  </div>
+</article>
+
+<style>
+/* 🔥 HERO IMAGE */
+.post-hero {
+    width: 100%;
+    height: 350px;
+    overflow: hidden;
+    border-radius: 16px;
+}
+
+.post-hero img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* 🧠 LEITURA MELHOR */
+.post-body {
+    color: #2d3748;
+    line-height: 1.8;
+}
+
+.post-body p {
+    margin-bottom: 1.5rem;
+}
+
+/* TÍTULOS */
+.post-body h1,
+.post-body h2,
+.post-body h3 {
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    font-weight: bold;
+}
+
+/* IMAGENS DO CONTEÚDO */
+.post-body img {
+    max-width: 100%;
+    border-radius: 10px;
+    margin: 2rem 0;
+}
+
+/* LISTAS */
+.post-body ul {
+    margin-bottom: 1.5rem;
+}
+
+/* 🔥 DETALHE PREMIUM */
+.post-body blockquote {
+    border-left: 4px solid #0d6efd;
+    padding-left: 1rem;
+    color: #555;
+    margin: 2rem 0;
+    font-style: italic;
+}
+</style>
+
+{% endblock %}

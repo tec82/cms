@@ -1,0 +1,131 @@
+{% extends 'base.html' %} {% block content %}
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-10">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+          <h2 class="fw-bold mb-0">Meus Posts</h2>
+          <p class="text-muted small">Gerencie suas publicações e conteúdos</p>
+        </div>
+        <a
+          href="{{ url_for('admin.create_post') }}"
+          class="btn btn-primary shadow-sm px-4"
+        >
+          <i class="bi bi-plus-lg"></i> Criar Post
+        </a>
+      </div>
+
+      <div class="featured-card p-0 overflow-hidden">
+        <div class="table-responsive">
+          <table class="table table-hover mb-0" id="posts-table">
+            <thead class="bg-light">
+              <tr>
+                <th
+                  scope="col"
+                  class="ps-4 py-3 text-uppercase small fw-bold text-muted"
+                >
+                  Título
+                </th>
+                <th
+                  scope="col"
+                  class="py-3 text-uppercase small fw-bold text-muted"
+                >
+                  Categoria
+                </th>
+                <th
+                  scope="col"
+                  class="py-3 text-uppercase small fw-bold text-muted text-end pe-4"
+                >
+                  Ações
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for post in posts %}
+              <tr>
+                <td class="ps-4 py-3 align-middle">
+                  <div class="fw-bold text-dark">{{ post.title }}</div>
+                  <span class="text-muted small">/post/{{ post.slug }}</span>
+                </td>
+                <td class="py-3 align-middle">
+                  <span class="tag tag-blue small" style="padding: 2px 10px"
+                    >{{ post.category.name }}</span
+                  >
+                </td>
+                <td class="py-3 align-middle text-end pe-4">
+                  <div class="btn-group shadow-sm">
+                    <a
+                      href="/post/{{ post.slug }}"
+                      class="btn btn-white btn-sm border"
+                      title="Visualizar"
+                    >
+                      👁️
+                    </a>
+                    <a
+                      href="{{ url_for('admin.update_post', id=post.id) }}"
+                      class="btn btn-white btn-sm border"
+                      title="Editar"
+                    >
+                      ✏️
+                    </a>
+                    <a
+                      href="{{ url_for('admin.delete_post', id=post.id) }}"
+                      class="btn btn-white btn-sm border text-danger delete-post"
+                      title="Excluir"
+                    >
+                      🗑️
+                    </a>
+                  </div>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+
+        {% if not posts %}
+        <div class="text-center py-5">
+          <p class="text-muted">Você ainda não possui posts publicados.</p>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script>
+  $(document).ready(function () {
+    // Confirmação simples antes de excluir
+    $(".delete-post").on("click", function (e) {
+      if (
+        !confirm("Tem certeza que deseja excluir este post permanentemente?")
+      ) {
+        e.preventDefault();
+      }
+    });
+  });
+</script>
+
+<style>
+  /* Estilos para deixar a tabela com cara de Dashboard */
+  .table-hover tbody tr:hover {
+    background-color: #f8fafc;
+  }
+  .btn-white {
+    background: #fff;
+    color: #64748b;
+  }
+  .btn-white:hover {
+    background: #f1f5f9;
+    color: #1e293b;
+  }
+  .table thead th {
+    border-top: none;
+    border-bottom: 1px solid #edf2f7;
+  }
+  #posts-table td {
+    border-bottom: 1px solid #edf2f7;
+  }
+</style>
+{% endblock %}

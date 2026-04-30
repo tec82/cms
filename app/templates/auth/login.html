@@ -1,0 +1,61 @@
+{% extends 'base.html' %} {% block content %}
+<div
+  class="container d-flex justify-content-center align-items-center"
+  style="min-height: 80vh"
+>
+  <div class="col-md-5 col-lg-4">
+    <div class="featured-card">
+      <div class="text-center mb-4">
+        <div class="badge-dev mb-3">Acesso Restrito</div>
+        <h2 class="fw-bold">Bem-vindo de volta</h2>
+        <p class="text-muted small">
+          Entre com suas credenciais para gerenciar seus posts
+        </p>
+      </div>
+
+      <form method="POST">
+        <div class="mb-3">
+          <label class="form-label fw-semibold small">Usuário</label>
+          <input
+            name="username"
+            class="form-control"
+            placeholder="Digite seu usuário"
+            required
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label fw-semibold small">Senha</label>
+          <input
+            type="password"
+            name="password"
+            class="form-control"
+            placeholder="••••••••"
+            required
+          />
+        </div>
+
+        <div class="d-grid mt-4">
+          <button class="btn btn-primary btn-lg shadow-sm">
+            Entrar no Painel
+          </button>
+        </div>
+      </form>
+
+      <div class="text-center mt-4">
+        <p class="text-muted small mb-0">
+          Não tem uma conta?
+          <a
+            href="{{ url_for('auth.register') }}"
+            class="text-primary fw-bold text-decoration-none"
+            >Registrar-se</a
+          >
+        </p>
+        <a href="/" class="text-muted small text-decoration-none"
+          >← Voltar para a Home</a
+        >
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
