@@ -40,10 +40,16 @@ def create_post():
         else:            
             category = Category.query.get(category_id)
 
+        # Upload da imagem
         image = request.files.get('image')
 
         if image:
-            result = cloudinary.uploader.upload(image)
+            result = cloudinary.uploader.upload(
+                image,
+                folder="posts",
+                width=800,
+                crop="scale",
+            )
             url = result['secure_url']
 
         post = Post(
@@ -51,7 +57,8 @@ def create_post():
             slug=slugify(title),
             content=content,
             is_paid=bool(request.form.get('paid')),
-            category=category
+            category=category,
+            image_url=url if image else None
         )
 
         db.session.add(post)
@@ -71,14 +78,20 @@ def update_post(id):
         post.content = request.form.get('content')
         post.is_paid = True if request.form.get('paid') else False
 
-        # 📸 Upload da imagem
+        # Upload da imagem
         image = request.files.get('image')
 
-        if image and image.filename != '':
-            upload_result = cloudinary.uploader.upload(image)
-            post.image_url = upload_result['secure_url']
+        if image:
+            result = cloudinary.uploader.upload(
+                image,
+                folder="posts",
+                width=800,
+                crop="scale",
+                overwrite=True
+            )
+            url = result['secure_url']
 
-        # 🔽 Categoria nova ou existente
+        # Categoria nova ou existente
         new_category_name = request.form.get('new_category')
         new_category_desc = request.form.get('new_category_description')
 
