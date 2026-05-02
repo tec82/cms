@@ -13,7 +13,7 @@
 
       <header class="mb-5 text-center">
         <span class="badge bg-primary mb-3">
-          {{ post.category.name }}
+          {{ post.category.name if post.category else 'Sem categoria' }}
         </span>
 
         <h1 class="fw-bold display-5">

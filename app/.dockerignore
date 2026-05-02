@@ -1,0 +1,17 @@
+# Comentários
+.git
+.github
+node_modules
+npm-debug.log
+Dockerfile
+.dockerignore
+.env
+*.md
+instance/
+.env-txt
+__pycache__/
+__pycache__
+
+__pycache__
+*.pyc
+.env

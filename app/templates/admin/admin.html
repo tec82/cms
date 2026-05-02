@@ -49,13 +49,13 @@
                 </td>
                 <td class="py-3 align-middle">
                   <span class="tag tag-blue small" style="padding: 2px 10px"
-                    >{{ post.category.name }}</span
+                    >{{ post.category.name if post.category else 'Sem categoria' }}</span
                   >
                 </td>
                 <td class="py-3 align-middle text-end pe-4">
                   <div class="btn-group shadow-sm">
                     <a
-                      href="/post/{{ post.slug }}"
+                      href="{{ url_for('site.post_detail', slug=post.slug) }}"
                       class="btn btn-white btn-sm border"
                       title="Visualizar"
                     >

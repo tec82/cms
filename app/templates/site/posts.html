@@ -40,7 +40,7 @@
         <div class="p-3 d-flex flex-column h-100">
 
           <small class="text-primary fw-bold text-uppercase">
-            {{ post.category.name }}
+            {{ post.category.name if post.category else 'Sem categoria' }}
           </small>
 
           <h5 class="fw-bold my-2">
