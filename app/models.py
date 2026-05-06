@@ -23,8 +23,10 @@ class Post(db.Model):
     content = db.Column(db.Text)
     image_url = db.Column(db.String(500))
     is_paid = db.Column(db.Boolean, default=False)
+    is_detach = db.Column(db.Boolean, default=False)
 
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow)
 
     category_id = db.Column(db.Integer, db.ForeignKey('category.id'))
     category = db.relationship('Category')

@@ -26,7 +26,7 @@ def create_post():
         content = request.form.get('content')
         category_id = request.form.get('category_id')
         new_category = request.form.get('new_category')
-        new_category_desc = request.form.get('new_category_description')
+        new_category_desc = request.form.get('new_category_description')        
 
         # PRIORIDADE: nova categoria
         if new_category:
@@ -57,7 +57,8 @@ def create_post():
             slug=slugify(title),
             content=content,
             is_paid=bool(request.form.get('paid')),
-            category=category,
+            category=category,            
+            is_detach= bool(request.form.get('is_detach')),
             image_url=url if image else None
         )
 
@@ -77,6 +78,7 @@ def update_post(id):
         post.title = request.form.get('title')
         post.content = request.form.get('content')
         post.is_paid = True if request.form.get('paid') else False
+        post.is_detach = True if request.form.get('is_detach') else False
 
         # Upload da imagem
         image = request.files.get('image')

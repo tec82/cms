@@ -9,9 +9,9 @@ site_bp = Blueprint('site', __name__)
 @site_bp.route('/')
 def index():    
     # POST DESTAQUE (último post)
-    featured = Post.query.order_by(Post.created_at.desc()).first()
+    featured = Post.query.filter(Post.is_detach == True).first()     
 
-    # CATEGORIAS + CONTAGEM
+    # CATEGORIAS + CONTAGEM 
     categories = db.session.query(
         Category,
         func.count(Post.id).label('total')

@@ -6,8 +6,8 @@
         <div class="badge-dev">📘 Blog de Desenvolvimento</div>
         <h1>Aprenda a construir <span>software melhor</span></h1>
         <p class="lead">
-          Artigos práticos sobre Python, Java, React e seus ecossistemas.
-          Conteúdo direto ao ponto para quem quer evoluir como desenvolvedor.
+          Tutoriais práticos, arquitetura real e boas práticas usadas no mercado.
+Python, React, Docker e mais — sem enrolação.
         </p>
         <a class="btn btn-dark btn-lg mt-3" href="{{ url_for('site.posts') }}"
           >Ver todos os posts →</a
@@ -17,33 +17,65 @@
   </div>
 </section>
 
+{% if featured %}
 <section class="container py-5">
   <div class="section-title">DESTAQUE</div>
-  <div class="featured-card">
-    <div class="tag">React</div>
-    <h3>React Hooks Essenciais: useState, useEffect e useRef</h3>
-    <p class="text-muted">
-      Entenda os hooks fundamentais do React e como usá-los corretamente para
-      construir componentes funcionais poderosos.
-    </p>
-    <div class="meta">16 mar 2026 • ⏱ 6 min</div>
-    <a class="article-link">Ler artigo →</a>
+
+  <div class="featured-card d-flex align-items-center justify-content-between">
+
+    <div class="featured-content">
+      <div class="tag">
+        {{ featured.category.name if featured.category else 'Sem categoria' }}
+      </div>
+
+      <h3>{{ featured.title }}</h3>
+
+      <p class="text-muted">
+        {{ featured.content | striptags | truncate(120) }}
+      </p>
+
+      <a class="article-link" href="{{ url_for('site.post_detail', slug=featured.slug) }}">
+        Ler artigo →
+      </a>
+    </div>
+
+    <div class="featured-image">
+      {% if featured.image_url %}
+        <img src="{{ featured.image_url }}" alt="{{ featured.title }}" class="img-fluid">
+      {% endif %}
+    </div>
+
   </div>
 </section>
+{% endif %}
 
 <section class="container py-5">
   <div class="section-title mb-4">CATEGORIAS</div>
+
   <div class="row g-4">
     {% for category, total in categories %}
+    
     <div class="col-lg-3 col-md-6">
-      <div class="category-card {{ loop.cycle('a', 'b', 'c', 'd') }}">
+
+      <a href="{{ url_for('site.posts', category=category.slug) }}"
+         class="category-card {{ loop.cycle('a','b','c','d') }} text-decoration-none d-block">
+
         <div class="category-content">
-          <h5>{{ category.name }}</h5>
-          <p>{{ category.description }}</p>
-          <span>{{ total }} artigo{{ 's' if total != 1 else '' }}</span>
+          <h5 class="mb-2">{{ category.name }}</h5>
+
+          <p class="mb-3 text-white-50">
+            {{ category.description or 'Explore conteúdos desta categoria.' }}
+          </p>
+
+          <span class="fw-semibold">
+            {{ total }} artigo{{ 's' if total != 1 else '' }}
+          </span>
         </div>
-      </div>
+
+      </a>
+
     </div>
+
     {% endfor %}
   </div>
 </section>
