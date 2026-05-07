@@ -15,6 +15,9 @@ class Category(db.Model):
     name = db.Column(db.String(100))
     slug = db.Column(db.String(100), unique=True)
     description = db.Column(db.String(200))
+    is_paid = db.Column(db.Boolean, default=False)    
+    is_detach = db.Column(db.Boolean, default=False)
+
 
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)

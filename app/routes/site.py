@@ -15,7 +15,7 @@ def index():
     categories = db.session.query(
         Category,
         func.count(Post.id).label('total')
-    ).outerjoin(Post).group_by(Category.id).all()
+    ).outerjoin(Post).filter(Category.is_detach).group_by(Category.id).all()
 
     return render_template(
         'site/index.html',
@@ -44,7 +44,7 @@ def posts():
     categories = db.session.query(
         Category,
         func.count(Post.id).label('total')
-    ).outerjoin(Post).group_by(Category.id).all()
+    ).outerjoin(Post).filter(Category.is_detach).group_by(Category.id).all()
 
     # Processa conteúdo JSON
     for post in posts_list:
@@ -60,23 +60,18 @@ def posts():
     )
 
 
-# ✅ ROTA CORRIGIDA (IMPORTANTE)
+# ROTA CORRIGIDA (IMPORTANTE)
 @site_bp.route('/artigo/<slug>')
 def post_detail(slug):
     post = Post.query.filter_by(slug=slug).first()
 
-    # 🔒 evita erro de None
+    # evita erro de None
     if not post:
         abort(404)
 
-    # 🔒 conteúdo pago (se quiser usar depois)
-    # if post.is_paid and not current_user.is_authenticated:
-    #     return "Conteúdo pago 🔒"
-
-    # Processa JSON também aqui (faltava isso)
-    try:
-        post.json_content = json.loads(post.content)
-    except:
-        post.json_content = {"blocks": []}
+    # conteúdo pago (se quiser usar depois)
+    if post.is_paid and not current_user.is_authenticated:
+         return "Conteúdo pago 🔒"
+    
 
     return render_template('site/post.html', post=post)

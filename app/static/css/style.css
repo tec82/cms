@@ -98,9 +98,9 @@ body {
 }
 
 .tag-a { background: #8b5cf6; }
-.tag-b   { background: #3b82f6; }
+.tag-b { background: #3b82f6; }
 .tag-c { background: #f59e0b; }
-.tag-d  { background: #10b981; }
+.tag-d { background: #10b981; }
 
 .meta {
     color: #94a3b8;
@@ -242,4 +242,135 @@ body {
   max-width: 100%;
   height: auto;
   border-radius: 10px;
+}
+.read-more {
+  color: #2563eb;
+  text-decoration: none;
+  font-weight: 500;
+} 
+
+
+.hero-box {
+    background: #0f172a;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 25px 60px rgba(15, 23, 42, 0.25);
+    border: 1px solid rgba(255,255,255,0.05);
+    max-width: 420px;
+}
+
+/* TOPO TERMINAL */
+.terminal-top {
+    background: #1e293b;
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+}
+
+.red {
+    background: #ef4444;
+}
+
+.yellow {
+    background: #f59e0b;
+}
+
+.green {
+    background: #10b981;
+}
+
+.terminal-title {
+    margin-left: auto;
+    font-size: 12px;
+    color: #94a3b8;
+    font-family: 'Inter', sans-serif;
+}
+
+/* CORPO */
+.terminal-body {
+    padding: 22px;
+    font-family: monospace;
+    font-size: 14px;
+    color: #e2e8f0;
+}
+
+.terminal-body p {
+    margin-bottom: 14px;
+}
+
+.terminal-body span {
+    color: #10b981;
+    margin-right: 8px;
+    font-weight: bold;
+}
+
+/* SUCCESS */
+.success {
+    margin-top: 20px;
+    background: rgba(16,185,129,0.1);
+    border: 1px solid rgba(16,185,129,0.2);
+    color: #10b981;
+    padding: 12px;
+    border-radius: 10px;
+    font-size: 13px;
+}
+
+/* HERO */
+.hero {
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+}
+
+/* HERO TITLE */
+.hero h1 span {
+    background: linear-gradient(90deg, #2563eb, #7c3aed);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* BOTÃO SECUNDÁRIO */
+.btn-secondary {
+    background: #64748b;
+    border: none;
+    color: white;
+    font-weight: 600;
+    padding: 12px;
+    border-radius: 10px;
+}
+
+.btn-secondary:hover {
+    background: #475569;
+    color: white;
+}
+
+/* TERMINAL */
+.hero-box {
+    width: 100%;
+    max-width: 480px;
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+
+    .hero {
+        text-align: center;
+        min-height: auto;
+        padding: 80px 0;
+    }
+
+    .hero p {
+        margin: auto;
+    }
+
+    .hero-box {
+        margin-top: 20px;
+    }
 }
