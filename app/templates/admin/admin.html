@@ -93,20 +93,6 @@
   </div>
 </div>
 
-<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-<script>
-  $(document).ready(function () {
-    // Confirmação simples antes de excluir
-    $(".delete-post").on("click", function (e) {
-      if (
-        !confirm("Tem certeza que deseja excluir este post permanentemente?")
-      ) {
-        e.preventDefault();
-      }
-    });
-  });
-</script>
-
 <style>
   /* Estilos para deixar a tabela com cara de Dashboard */
   .table-hover tbody tr:hover {

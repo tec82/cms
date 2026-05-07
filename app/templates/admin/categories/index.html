@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <!-- HEADER -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+            <h2 class="fw-bold mb-0">
+                Categorias
+            </h2>
+
+            <p class="text-muted">
+                Gerencie as categorias do seu blog
+            </p>
+        </div>
+
+        <a
+            href="{{ url_for('admin.create_category') }}"
+            class="btn btn-dark"
+        >
+            + Nova Categoria
+        </a>
+
+    </div>
+
+    <!-- TABLE -->
+    <div class="card border-0 shadow-sm">
+
+        <div class="table-responsive">
+
+            <table class="table align-middle mb-0">
+
+                <thead class="table-light">
+
+                    <tr>                       
+                        <th>Nome</th>
+                        <th>Destaque?</th>
+                        <th>Premium?</th>                        
+                        <th width="180">Ações</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for category in categories %}
+
+                    <tr>
+                        <td>
+                            <strong>
+                                {{ category.name }}
+                            </strong>
+                        </td>                        
+
+                        <td>
+                            <span class="text-muted">                                
+                                {{ "Sim" if category.is_detach else "Não" }}
+                            </span>
+                        </td>
+                        <td>
+                            <span class="text-muted">                                
+                                {{ "Sim" if category.is_paid else "Não" }}
+                            </span>
+                        </td>
+
+                        <td>
+
+                            <div class="d-flex gap-2">
+
+                                <a
+                                    href="{{ url_for('admin.update_category', id=category.id) }}"
+                                    class="btn btn-sm btn-outline-primary"
+                                >
+                                    Editar
+                                </a>
+
+                                <a
+                                    href="{{ url_for('admin.delete_category', id=category.id) }}"
+                                    class="btn btn-sm btn-outline-danger"
+                                    onclick="return confirm('Deseja excluir esta categoria?')"
+                                >
+                                    Excluir
+                                </a>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

@@ -5,13 +5,13 @@
 
   <div class="d-flex justify-content-between align-items-center mb-5">
     <div class="btn-group">
-      <a href="{{ url_for('site.posts') }}" class="btn btn-sm btn-outline-dark">
+      <a href="{{ url_for('site.posts') }}" class="btn btn-sm btn-outline-dark" data-category="">
         Todos
       </a>
 
       {% for cat_item in categories %}
       <a href="{{ url_for('site.posts', category=cat_item.Category.slug) }}"
-         class="btn btn-sm btn-outline-dark">
+         class="btn btn-sm btn-outline-dark" data-category="{{ cat_item.Category.slug }}">
         {{ cat_item.Category.name }}
       </a>
       {% endfor %}

@@ -18,30 +18,21 @@ def dashboard():
     posts = Post.query.order_by(Post.id.desc()).all()
     return render_template('admin/admin.html', posts=posts)
 
+
 @admin_bp.route('/create', methods=['GET', 'POST'])
 def create_post():
 
-    if request.method == 'POST':        
+    if request.method == 'POST':
+
         title = request.form['title']
         content = request.form.get('content')
+
         category_id = request.form.get('category_id')
-        new_category = request.form.get('new_category')
-        new_category_desc = request.form.get('new_category_description')        
+        category = Category.query.get(category_id)
 
-        # PRIORIDADE: nova categoria
-        if new_category:
-            category = Category(
-                name=new_category,
-                slug=slugify(new_category),
-                description=new_category_desc
-            )
-            db.session.add(category)
-            db.session.commit()
-        else:            
-            category = Category.query.get(category_id)
-
-        # Upload da imagem
         image = request.files.get('image')
+
+        url = None
 
         if image:
             result = cloudinary.uploader.upload(
@@ -50,40 +41,58 @@ def create_post():
                 width=800,
                 crop="scale",
             )
+
             url = result['secure_url']
 
         post = Post(
             title=title,
             slug=slugify(title),
             content=content,
-            is_paid=bool(request.form.get('paid')),
-            category=category,            
-            is_detach= bool(request.form.get('is_detach')),
-            image_url=url if image else None
+            category=category,
+            is_paid=True if request.form.get('paid') else False,
+            is_detach=True if request.form.get('is_detach') else False,
+            image_url=url
         )
 
         db.session.add(post)
         db.session.commit()
-                
+
         return redirect(url_for('admin.dashboard'))
 
     categories = Category.query.all()
-    return render_template('admin/create_post.html', categories=categories)
+
+    return render_template(
+        'admin/posts/create_post.html',
+        categories=categories
+    )
 
 @admin_bp.route('/update/<int:id>', methods=['GET', 'POST'])
 def update_post(id):
+
     post = Post.query.get_or_404(id)
 
     if request.method == 'POST':
+
         post.title = request.form.get('title')
+        post.slug = slugify(post.title)
+
         post.content = request.form.get('content')
+
         post.is_paid = True if request.form.get('paid') else False
+
         post.is_detach = True if request.form.get('is_detach') else False
+
+        # Categoria
+        category_id = request.form.get('category_id')
+
+        if category_id:
+            post.category_id = int(category_id)
 
         # Upload da imagem
         image = request.files.get('image')
 
         if image:
+
             result = cloudinary.uploader.upload(
                 image,
                 folder="posts",
@@ -91,35 +100,20 @@ def update_post(id):
                 crop="scale",
                 overwrite=True
             )
-            url = result['secure_url']
 
-        # Categoria nova ou existente
-        new_category_name = request.form.get('new_category')
-        new_category_desc = request.form.get('new_category_description')
-
-        if new_category_name:
-            category = Category.query.filter_by(name=new_category_name).first()
-
-            if not category:
-                category = Category(
-                    name=new_category_name,
-                    slug=slugify(new_category_name),
-                    description=new_category_desc
-                )
-                db.session.add(category)
-                db.session.flush()
-
-            post.category_id = category.id
-        else:
-            category_id = request.form.get('category_id')
-            if category_id:
-                post.category_id = int(category_id)
+            post.image_url = result['secure_url']
 
         db.session.commit()
+
         return redirect(url_for('admin.dashboard'))
 
     categories = Category.query.all()
-    return render_template('admin/update.html', post=post, categories=categories)
+
+    return render_template(
+        'admin/posts/update_post.html',
+        post=post,
+        categories=categories
+    )
 
 @admin_bp.route('/delete/<id>', methods=['GET'])
 def delete_post(id):
@@ -127,3 +121,69 @@ def delete_post(id):
     db.session.delete(post)
     db.session.commit()
     return redirect(url_for('admin.dashboard'))
+
+#  ROTAS DE CATEGORIAS
+@admin_bp.route('/categories')
+def categories():
+    categories = Category.query.order_by(Category.id.desc()).all()
+    return render_template(
+        'admin/categories/index.html',
+        categories=categories
+    )
+
+
+@admin_bp.route('/categories/create', methods=['GET', 'POST'])
+def create_category():
+
+    if request.method == 'POST':
+
+        name = request.form.get('name')
+        description = request.form.get('description')
+
+        category = Category(
+            name=name,
+            slug=slugify(name),
+            description=description,
+            is_paid=True if request.form.get('paid') else False,
+            is_detach=True if request.form.get('is_detach') else False,
+        )
+
+        db.session.add(category)
+        db.session.commit()
+
+        return redirect(url_for('admin.categories'))
+
+    return render_template('admin/categories/create.html')
+
+
+@admin_bp.route('/categories/update/<int:id>', methods=['GET', 'POST'])
+def update_category(id):
+
+    category = Category.query.get_or_404(id)
+
+    if request.method == 'POST':
+
+        category.name = request.form.get('name')
+        category.slug = slugify(category.name)
+        category.description = request.form.get('description')
+        category.is_paid = True if request.form.get('paid') else False
+        category.is_detach = True if request.form.get('is_detach') else False   
+        db.session.commit()
+
+        return redirect(url_for('admin.categories'))
+
+    return render_template(
+        'admin/categories/update.html',
+        category=category
+    )
+
+
+@admin_bp.route('/categories/delete/<int:id>')
+def delete_category(id):
+
+    category = Category.query.get_or_404(id)
+
+    db.session.delete(category)
+    db.session.commit()
+
+    return redirect(url_for('admin.categories'))
