@@ -46,6 +46,10 @@ login_manager.init_app(app)
 def load_user(user_id):
     return User.query.get(int(user_id))
 
+@app.before_request
+def create_tables():
+    db.create_all()
+    
 app.register_blueprint(site_bp)
 app.register_blueprint(admin_bp)
 app.register_blueprint(auth_bp)

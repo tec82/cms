@@ -1,6 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin
-from datetime import datetime
+from datetime import datetime, timezone
 
 db = SQLAlchemy()
 
@@ -9,7 +9,12 @@ class User(db.Model, UserMixin):
     username = db.Column(db.String(100), unique=True)
     password = db.Column(db.String(200))
     is_premium = db.Column(db.Boolean, default=False)
+    is_super_user = db.Column(db.Boolean, default=False)
 
+class Purchase(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer)
+    
 class Category(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100))
@@ -17,7 +22,6 @@ class Category(db.Model):
     description = db.Column(db.String(200))
     is_paid = db.Column(db.Boolean, default=False)    
     is_detach = db.Column(db.Boolean, default=False)
-
 
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -28,24 +32,8 @@ class Post(db.Model):
     is_paid = db.Column(db.Boolean, default=False)
     is_detach = db.Column(db.Boolean, default=False)
 
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
-    updated_at = db.Column(db.DateTime, default=datetime.utcnow)
+    created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
+    updated_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
 
     category_id = db.Column(db.Integer, db.ForeignKey('category.id'))
-    category = db.relationship('Category')
-
-class Course(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(200))
-    price = db.Column(db.Float)
-
-class Lesson(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(200))
-    video_url = db.Column(db.String(300))
-    course_id = db.Column(db.Integer, db.ForeignKey('course.id'))
-
-class Purchase(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer)
-    course_id = db.Column(db.Integer)
+    category = db.relationship('Category')   
