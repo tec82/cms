@@ -1,7 +1,8 @@
-from flask import Blueprint, render_template, request, redirect, url_for
-from flask_login import login_required
+from flask import Blueprint, render_template, request, redirect, url_for, flash
+from flask_login import login_required,current_user
 from models import db, Post, Category
 from slugify import slugify
+
 
 import cloudinary.uploader
 
@@ -11,7 +12,12 @@ admin_bp = Blueprint('admin', __name__, url_prefix='/admin')
 @admin_bp.before_request
 @login_required
 def protect_admin():
-    pass
+    if not current_user.is_super_user:
+        return redirect(url_for('auth.logout'))
+        '''flash(
+            'Você não possui permissão para acessar esta área.',
+            'danger'
+        )'''
 
 @admin_bp.route('/')
 def dashboard():
@@ -26,12 +32,10 @@ def create_post():
 
         title = request.form['title']
         content = request.form.get('content')
-
         category_id = request.form.get('category_id')
         category = Category.query.get(category_id)
 
         image = request.files.get('image')
-
         url = None
 
         if image:
@@ -75,11 +79,8 @@ def update_post(id):
 
         post.title = request.form.get('title')
         post.slug = slugify(post.title)
-
         post.content = request.form.get('content')
-
         post.is_paid = True if request.form.get('paid') else False
-
         post.is_detach = True if request.form.get('is_detach') else False
 
         # Categoria
@@ -162,7 +163,6 @@ def update_category(id):
     category = Category.query.get_or_404(id)
 
     if request.method == 'POST':
-
         category.name = request.form.get('name')
         category.slug = slugify(category.name)
         category.description = request.form.get('description')

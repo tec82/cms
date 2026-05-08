@@ -46,13 +46,6 @@ def posts():
         func.count(Post.id).label('total')
     ).outerjoin(Post).filter(Category.is_detach).group_by(Category.id).all()
 
-    # Processa conteúdo JSON
-    for post in posts_list:
-        try:
-            post.json_content = json.loads(post.content)
-        except:
-            post.json_content = {"blocks": []}
-
     return render_template(
         'site/posts.html',
         posts=posts_list,
@@ -60,7 +53,6 @@ def posts():
     )
 
 
-# ROTA CORRIGIDA (IMPORTANTE)
 @site_bp.route('/artigo/<slug>')
 def post_detail(slug):
     post = Post.query.filter_by(slug=slug).first()
@@ -71,7 +63,6 @@ def post_detail(slug):
 
     # conteúdo pago (se quiser usar depois)
     if post.is_paid and not current_user.is_authenticated:
-         return "Conteúdo pago 🔒"
-    
+         return "Conteúdo pago 🔒"    
 
     return render_template('site/post.html', post=post)
