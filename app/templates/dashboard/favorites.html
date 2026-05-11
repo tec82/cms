@@ -1,0 +1,179 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <!-- HEADER -->
+    <div class="d-flex justify-content-between align-items-center mb-5">
+
+        <div>
+
+            <h2 class="fw-bold mb-1">
+                ⭐ Meus Favoritos
+            </h2>
+
+            <p class="text-muted mb-0">
+                Todos os conteúdos salvos por você
+            </p>
+
+        </div>
+
+        <a
+            href="{{ url_for('dashboard.index') }}"
+            class="btn btn-outline-secondary"
+        >
+            Voltar
+        </a>
+
+    </div>
+
+    {% if favorites %}
+
+        <div class="row g-4">
+
+            {% for favorite, post in favorites %}
+
+                <div class="col-lg-6">
+
+                    <div class="card border-0 shadow-sm h-100 overflow-hidden">
+
+                        <!-- IMAGE -->
+                        {% if post.image_url %}
+
+                            <img
+                                src="{{ post.image_url }}"
+                                class="card-img-top"
+                                style="height: 220px; object-fit: cover;"
+                            >
+
+                        {% endif %}
+
+                        <div class="card-body p-4 d-flex flex-column">
+
+                            <!-- CATEGORY -->
+                            {% if post.category %}
+
+                                <div class="mb-3">
+
+                                    <span class="badge bg-light text-dark border">
+
+                                        {{ post.category.name }}
+
+                                    </span>
+
+                                    {% if post.is_paid %}
+
+                                        <span class="badge bg-warning text-dark">
+                                            Premium
+                                        </span>
+
+                                    {% endif %}
+
+                                </div>
+
+                            {% endif %}
+
+                            <!-- TITLE -->
+                            <h4 class="fw-bold mb-3">
+
+                                {{ post.title }}
+
+                            </h4>
+
+                            <!-- CONTENT -->
+                            <div class="text-muted small mb-4">
+
+                                {{ post.content|striptags|truncate(160) }}
+
+                            </div>
+
+                            <!-- FOOTER -->
+                            <div
+                                class="d-flex justify-content-between align-items-center mt-auto"
+                            >
+
+                                <small class="text-muted">
+
+                                    Favoritado em
+                                    {{ favorite.created_at.strftime('%d/%m/%Y') }}
+
+                                </small>
+
+                                <div class="d-flex gap-2">
+
+                                    <!-- VER POST -->
+                                    <a
+                                        href="{{ url_for('site.post', slug=post.slug) }}"
+                                        class="btn btn-sm btn-dark"
+                                    >
+                                        Ler Post
+                                    </a>
+
+                                    <!-- REMOVER -->
+                                    <a
+                                        href="{{ url_for('dashboard.remove_favorite', id=favorite.id) }}"
+                                        class="btn btn-sm btn-outline-danger"
+                                    >
+                                        Remover
+                                    </a>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+    {% else %}
+
+        <!-- EMPTY STATE -->
+        <div class="card border-0 shadow-sm">
+
+            <div class="card-body text-center py-5">
+
+                <div
+                    class="mx-auto mb-4 d-flex align-items-center justify-content-center rounded-circle"
+                    style="
+                        width: 90px;
+                        height: 90px;
+                        background: #f8fafc;
+                        font-size: 2rem;
+                    "
+                >
+                    ⭐
+                </div>
+
+                <h4 class="fw-bold mb-2">
+                    Nenhum favorito ainda
+                </h4>
+
+                <p class="text-muted mb-4">
+
+                    Você ainda não adicionou conteúdos aos favoritos.
+
+                </p>
+
+                <a
+                    href="{{ url_for('site.posts') }}"
+                    class="btn btn-primary px-4"
+                >
+                    Explorar Conteúdos
+                </a>
+
+            </div>
+
+        </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}
