@@ -1,0 +1,282 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <!-- HEADER -->
+    <div class="d-flex justify-content-between align-items-center mb-5">
+
+        <div>
+
+            <h2 class="fw-bold mb-1">
+                💳 Meus Pagamentos
+            </h2>
+
+            <p class="text-muted mb-0">
+                Histórico completo das suas assinaturas e pagamentos
+            </p>
+
+        </div>
+
+        <a
+            href="{{ url_for('dashboard.index') }}"
+            class="btn btn-outline-secondary"
+        >
+            Voltar
+        </a>
+
+    </div>
+
+    {% if payments %}
+
+        <!-- RESUMO -->
+        <div class="row g-4 mb-5">
+
+            <!-- TOTAL -->
+            <div class="col-md-4">
+
+                <div class="card border-0 shadow-sm h-100">
+
+                    <div class="card-body p-4">
+
+                        <small class="text-muted d-block mb-2">
+                            Total de Pagamentos
+                        </small>
+
+                        <h3 class="fw-bold mb-0">
+                            {{ payments|length }}
+                        </h3>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- APROVADOS -->
+            <div class="col-md-4">
+
+                <div class="card border-0 shadow-sm h-100">
+
+                    <div class="card-body p-4">
+
+                        <small class="text-muted d-block mb-2">
+                            Pagamentos Aprovados
+                        </small>
+
+                        <h3 class="fw-bold mb-0">
+
+                            {{
+                                payments
+                                | selectattr('status', 'equalto', 'paid')
+                                | list
+                                | length
+                            }}
+
+                        </h3>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- VALOR -->
+            <div class="col-md-4">
+
+                <div class="card border-0 shadow-sm h-100">
+
+                    <div class="card-body p-4">
+
+                        <small class="text-muted d-block mb-2">
+                            Total Investido
+                        </small>
+
+                        <h3 class="fw-bold mb-0">
+
+                            R$
+                            {{
+                                '%.2f'|format(
+                                    payments
+                                    | sum(attribute='amount')
+                                )
+                            }}
+
+                        </h3>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- TABELA -->
+        <div class="card border-0 shadow-sm overflow-hidden">
+
+            <div class="table-responsive">
+
+                <table class="table align-middle mb-0">
+
+                    <thead class="table-light">
+
+                        <tr>
+                            <th>ID</th>
+                            <th>Valor</th>
+                            <th>Status</th>
+                            <th>Gateway</th>
+                            <th>Data</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        {% for payment in payments %}
+
+                            <tr>
+
+                                <!-- ID -->
+                                <td>
+
+                                    <strong>
+                                        #{{ payment.id }}
+                                    </strong>
+
+                                </td>
+
+                                <!-- VALOR -->
+                                <td>
+
+                                    <strong>
+
+                                        R$
+                                        {{ '%.2f'|format(payment.amount) }}
+
+                                    </strong>
+
+                                </td>
+
+                                <!-- STATUS -->
+                                <td>
+
+                                    {% if payment.status == 'paid' %}
+
+                                        <span class="badge bg-success">
+                                            Pago
+                                        </span>
+
+                                    {% elif payment.status == 'pending' %}
+
+                                        <span class="badge bg-warning text-dark">
+                                            Pendente
+                                        </span>
+
+                                    {% else %}
+
+                                        <span class="badge bg-danger">
+                                            Cancelado
+                                        </span>
+
+                                    {% endif %}
+
+                                </td>
+
+                                <!-- PROVIDER -->
+                                <td>
+
+                                    {% if payment.provider == 'stripe' %}
+
+                                        <span class="badge bg-dark">
+                                            Stripe
+                                        </span>
+
+                                    {% elif payment.provider == 'mercado_pago' %}
+
+                                        <span
+                                            class="badge"
+                                            style="
+                                                background: #009ee3;
+                                            "
+                                        >
+                                            Mercado Pago
+                                        </span>
+
+                                    {% else %}
+
+                                        <span class="badge bg-secondary">
+
+                                            {{ payment.provider }}
+
+                                        </span>
+
+                                    {% endif %}
+
+                                </td>
+
+                                <!-- DATA -->
+                                <td>
+
+                                    {{ payment.created_at.strftime('%d/%m/%Y %H:%M') }}
+
+                                </td>
+
+                            </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    {% else %}
+
+        <!-- EMPTY -->
+        <div class="card border-0 shadow-sm">
+
+            <div class="card-body text-center py-5">
+
+                <div
+                    class="mx-auto mb-4 d-flex align-items-center justify-content-center rounded-circle"
+                    style="
+                        width: 90px;
+                        height: 90px;
+                        background: #f8fafc;
+                        font-size: 2rem;
+                    "
+                >
+                    💳
+                </div>
+
+                <h4 class="fw-bold mb-2">
+                    Nenhum pagamento encontrado
+                </h4>
+
+                <p class="text-muted mb-4">
+
+                    Você ainda não realizou nenhum pagamento na plataforma.
+
+                </p>
+
+                <a
+                    href="{{ url_for('dashboard.premium_posts') }}"
+                    class="btn btn-primary px-4"
+                >
+                    Explorar Conteúdo Premium
+                </a>
+
+            </div>
+
+        </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}
