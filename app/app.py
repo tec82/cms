@@ -6,6 +6,7 @@ from flask_login import LoginManager
 from routes.site import site_bp
 from routes.admin import admin_bp
 from routes.auth import auth_bp
+from routes.dashboard import dashboard_bp
 
 import cloudinary
 import cloudinary.uploader
@@ -53,6 +54,7 @@ def create_tables():
 app.register_blueprint(site_bp)
 app.register_blueprint(admin_bp)
 app.register_blueprint(auth_bp)
+app.register_blueprint(dashboard_bp)
 
 
 if __name__ == '__main__':

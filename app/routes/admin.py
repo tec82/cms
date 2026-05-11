@@ -52,6 +52,7 @@ def create_post():
             title=title,
             slug=slugify(title),
             content=content,
+            is_draft=True if request.form.get('is_draft') else False,            
             category=category,
             is_paid=True if request.form.get('paid') else False,
             is_detach=True if request.form.get('is_detach') else False,
@@ -80,6 +81,7 @@ def update_post(id):
         post.title = request.form.get('title')
         post.slug = slugify(post.title)
         post.content = request.form.get('content')
+        post.is_draft = True if request.form.get('is_draft') else False
         post.is_paid = True if request.form.get('paid') else False
         post.is_detach = True if request.form.get('is_detach') else False
 

@@ -38,7 +38,10 @@ def login():
 
         if user and check_password_hash(user.password, request.form['password']):
             login_user(user)
-            return redirect(url_for('admin.dashboard'))
+            if user.is_super_user:
+                return redirect(url_for('admin.dashboard'))
+            else:
+                return redirect(url_for('dashboard.index'))
         else:
             flash('Usuário ou senha inválidos.', 'danger')            
         
