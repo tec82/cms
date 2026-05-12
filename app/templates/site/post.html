@@ -1,94 +1,164 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<article class="container py-5">
-  <div class="row justify-content-center">
-    <div class="col-lg-8">
 
+<article class="container py-5">
+
+  <div class="row justify-content-center">
+
+    <div class="col-xl-8 col-lg-9">
+
+      <!-- HERO IMAGE -->
       {% if post.image_url %}
-      <div class="post-hero mb-4">
-        <img src="{{ post.image_url }}" alt="{{ post.title }}">
+
+      <div class="post-hero shadow-sm mb-4">
+
+        <img
+          src="{{ post.image_url }}"
+          alt="{{ post.title }}"
+        >
+
       </div>
+
       {% endif %}
 
-      <header class="mb-5 text-center">
-        <span class="badge bg-primary mb-3">
-          {{ post.category.name if post.category else 'Sem categoria' }}
-        </span>
+      <!-- ARTICLE CARD -->
+      <div class="card border-0 shadow-sm overflow-hidden">
 
-        <h1 class="fw-bold display-5">
-          {{ post.title }}
-        </h1>
+        <div class="card-body p-4 p-md-5">
 
-        <p class="text-muted">
-          Publicado em {{ post.created_at.strftime('%d/%m/%Y') }}
-        </p>
+          <!-- TOP -->
+          <div class="d-flex justify-content-between align-items-start flex-wrap gap-3 mb-4">
 
-        <hr />
-      </header>
+            <!-- CATEGORY -->
+            <div class="d-flex align-items-center gap-2 flex-wrap">
 
-      <div class="post-body fs-5">
-        {{ post.content | safe }}
+              <span class="badge bg-primary px-3 py-2">
+
+                {{ post.category.name if post.category else 'Sem categoria' }}
+
+              </span>
+
+              {% if post.is_paid %}
+
+              <span class="badge bg-warning text-dark px-3 py-2">
+                Premium
+              </span>
+
+              {% endif %}
+
+              {% if post.is_detach %}
+
+              <span class="badge bg-success px-3 py-2">
+                Destaque
+              </span>
+
+              {% endif %}
+
+            </div>
+
+            <!-- FAVORITE -->
+            {% if current_user.is_authenticated %}
+
+              {% if favorite %}
+
+              <a
+                href="{{ url_for('dashboard.remove_favorite', id=favorite.id) }}"
+                class="btn btn-danger rounded-pill px-4"
+              >
+                💔 Remover Favorito
+              </a>
+
+              {% else %}
+
+              <a
+                href="{{ url_for('dashboard.add_favorite', post_id=post.id) }}"
+                class="btn btn-outline-danger rounded-pill px-4"
+              >
+                ❤️ Favoritar
+              </a>
+
+              {% endif %}
+
+            {% endif %}
+
+          </div>
+
+          <!-- TITLE -->
+          <header class="mb-5">
+
+            <h1 class="fw-bold display-5 post-title mb-4">
+
+              {{ post.title }}
+
+            </h1>
+
+            <!-- META -->
+            <div
+              class="d-flex flex-wrap align-items-center gap-4 text-muted small"
+            >
+
+              <div class="d-flex align-items-center gap-2">
+
+                <span>📅</span>
+
+                <span>
+                  {{ post.created_at.strftime('%d/%m/%Y') }}
+                </span>
+
+              </div>
+
+              <div class="d-flex align-items-center gap-2">
+
+                <span>⏱️</span>
+
+                <span>
+                  Leitura rápida
+                </span>
+
+              </div>
+
+            </div>
+
+          </header>
+
+          <!-- CONTENT -->
+          <div class="post-body fs-5">
+
+            {{ post.content | safe }}
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- NAVIGATION -->
+      <div class="d-flex justify-content-between mt-4">
+
+        <a
+          href="{{ url_for('site.posts') }}"
+          class="btn btn-light border rounded-pill px-4"
+        >
+          ← Voltar
+        </a>
+
+        {% if current_user.is_authenticated %}
+
+        <a
+          href="{{ url_for('dashboard.index') }}"
+          class="btn btn-dark rounded-pill px-4"
+        >
+          Dashboard
+        </a>
+
+        {% endif %}
+
       </div>
 
     </div>
+
   </div>
+
 </article>
-
-<style>
-/* 🔥 HERO IMAGE */
-.post-hero {
-    width: 100%;
-    height: 350px;
-    overflow: hidden;
-    border-radius: 16px;
-}
-
-.post-hero img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-/* 🧠 LEITURA MELHOR */
-.post-body {
-    color: #2d3748;
-    line-height: 1.8;
-}
-
-.post-body p {
-    margin-bottom: 1.5rem;
-}
-
-/* TÍTULOS */
-.post-body h1,
-.post-body h2,
-.post-body h3 {
-    margin-top: 2rem;
-    margin-bottom: 1rem;
-    font-weight: bold;
-}
-
-/* IMAGENS DO CONTEÚDO */
-.post-body img {
-    max-width: 100%;
-    border-radius: 10px;
-    margin: 2rem 0;
-}
-
-/* LISTAS */
-.post-body ul {
-    margin-bottom: 1.5rem;
-}
-
-/* 🔥 DETALHE PREMIUM */
-.post-body blockquote {
-    border-left: 4px solid #0d6efd;
-    padding-left: 1rem;
-    color: #555;
-    margin: 2rem 0;
-    font-style: italic;
-}
-</style>
-
 {% endblock %}

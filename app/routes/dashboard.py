@@ -59,17 +59,22 @@ def favorites():
         favorites=favorites
     )
 
-'''
+
 # =========================================================
 # ADICIONAR FAVORITO
 # =========================================================
 @dashboard_bp.route('/favorite/add/<int:post_id>')
 @login_required
 def add_favorite(post_id):
+    post = Post.query.filter_by(id=post_id).first()   
+
+    # evita erro de None
+    if not post:
+        abort(404)
 
     exists = Favorite.query.filter_by(
         user_id=current_user.id,
-        post_id=post_id
+        post_id=post.id
     ).first()
 
     if exists:
@@ -79,11 +84,11 @@ def add_favorite(post_id):
             'warning'
         )
 
-        return redirect(url_for('site.post', id=post_id))
+        return redirect(url_for('site.post_detail', slug=post.slug))
 
     favorite = Favorite(
         user_id=current_user.id,
-        post_id=post_id
+         post_id=post.id
     )
 
     db.session.add(favorite)
@@ -94,7 +99,7 @@ def add_favorite(post_id):
         'success'
     )
 
-    return redirect(url_for('site.post', id=post_id))
+    return redirect(url_for('site.post_detail', slug= post.slug))
 
 
 # =========================================================
@@ -125,7 +130,7 @@ def remove_favorite(id):
 
     return redirect(url_for('dashboard.favorites'))
 
-
+'''
 # =========================================================
 # HISTÓRICO
 # =========================================================

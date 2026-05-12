@@ -7,8 +7,7 @@ db = SQLAlchemy()
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(100), unique=True)
-    password = db.Column(db.String(200))
-    is_premium = db.Column(db.Boolean, default=False)
+    password = db.Column(db.String(200))    
     is_super_user = db.Column(db.Boolean, default=False)
 
 class Purchase(db.Model):

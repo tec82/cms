@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, abort
 from flask_login import current_user
-from models import Post, Category, db
+from models import Favorite, Post, Category, db
 from sqlalchemy import func
 import json
 
@@ -61,8 +61,16 @@ def post_detail(slug):
     if not post:
         abort(404)
 
+    favorite = None
+
+    if current_user.is_authenticated and not current_user.is_super_user:
+        favorite = Favorite.query.filter_by(
+            user_id=current_user.id,
+            post_id=post.id
+        ).first()
+        
     # conteúdo pago (se quiser usar depois)
     if post.is_paid and not current_user.is_authenticated:
          return "Conteúdo pago 🔒"    
 
-    return render_template('site/post.html', post=post)
+    return render_template('site/post.html', post=post, favorite=favorite)
