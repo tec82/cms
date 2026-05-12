@@ -1,11 +1,18 @@
-/* CONFIGURAÇÕES GERAIS */
+/* =========================================================
+   CONFIGURAÇÕES GERAIS
+========================================================= */
+
 body {
     font-family: 'Inter', sans-serif;
     background: #f7f9fc;
     color: #1e293b;
+    transition: .3s;
 }
 
-/* NAVBAR */
+/* =========================================================
+   NAVBAR
+========================================================= */
+
 .navbar {
     padding: 18px 0;
 }
@@ -19,15 +26,23 @@ body {
     font-weight: 500;
     color: #334155 !important;
     margin-left: 15px;
+    transition: .2s;
 }
 
-.nav-link:hover, .nav-link.active {
+.nav-link:hover,
+.nav-link.active {
     color: #2563eb !important;
 }
 
-/* HERO SECTION */
+/* =========================================================
+   HERO SECTION
+========================================================= */
+
 .hero {
-    padding: 100px 0 80px 0;
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+    padding: 100px 0 80px;
     background: linear-gradient(180deg, #ffffff, #f7f9fc);
 }
 
@@ -37,8 +52,10 @@ body {
     line-height: 1.2;
 }
 
-.hero span {
-    color: #2563eb;
+.hero h1 span {
+    background: linear-gradient(90deg, #2563eb, #7c3aed);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 .hero p {
@@ -46,6 +63,10 @@ body {
     color: #64748b;
     max-width: 520px;
 }
+
+/* =========================================================
+   BADGES
+========================================================= */
 
 .badge-dev {
     display: inline-block;
@@ -58,7 +79,36 @@ body {
     margin-bottom: 20px;
 }
 
-/* TÍTULOS DE SEÇÃO */
+.tag {
+    display: inline-block;
+    background: #2563eb;
+    color: white;
+    font-size: 12px;
+    padding: 5px 10px;
+    border-radius: 999px;
+    margin-bottom: 10px;
+}
+
+.tag-a {
+    background: #8b5cf6;
+}
+
+.tag-b {
+    background: #3b82f6;
+}
+
+.tag-c {
+    background: #f59e0b;
+}
+
+.tag-d {
+    background: #10b981;
+}
+
+/* =========================================================
+   SECTION TITLES
+========================================================= */
+
 .section-title {
     font-size: 14px;
     font-weight: 700;
@@ -67,40 +117,72 @@ body {
     margin-bottom: 20px;
 }
 
-/* CARDS (Destaque e Listagem) */
-.featured-card, .post-card {
+/* =========================================================
+   CARDS
+========================================================= */
+
+.featured-card,
+.post-card,
+.card {
     background: #fff;
     border-radius: 16px;
+    transition: .3s;
+}
+
+.featured-card,
+.post-card {
     padding: 30px;
     box-shadow: 0 15px 40px rgba(0,0,0,0.05);
-    transition: .3s;
     height: 100%;
 }
 
-.featured-card:hover, .post-card:hover {
+.featured-card:hover,
+.post-card:hover,
+.card:hover {
     transform: translateY(-5px);
     box-shadow: 0 25px 60px rgba(0,0,0,0.08);
 }
 
-.featured-card h3, .post-card h5 {
+.featured-card h3,
+.post-card h5 {
     font-weight: 700;
     margin-top: 15px;
 }
 
-/* TAGS E CORES */
-.tag {
-    display: inline-block;
-    color: white;
-    font-size: 13px;
-    padding: 5px 12px;
-    border-radius: 20px;
-    background: #2563eb; /* Cor padrão */
+.card h2 {
+    margin: 10px 0;
 }
 
-.tag-a { background: #8b5cf6; }
-.tag-b { background: #3b82f6; }
-.tag-c { background: #f59e0b; }
-.tag-d { background: #10b981; }
+.card p {
+    color: #6b7280;
+}
+
+/* =========================================================
+   FEATURED AREA
+========================================================= */
+
+.featured-card {
+    gap: 20px;
+}
+
+.featured-content {
+    flex: 1;
+}
+
+.featured-image {
+    flex: 1;
+    text-align: right;
+}
+
+.featured-image img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+}
+
+/* =========================================================
+   META
+========================================================= */
 
 .meta {
     color: #94a3b8;
@@ -108,7 +190,10 @@ body {
     margin-top: 15px;
 }
 
-/* CATEGORY CARDS (Home) */
+/* =========================================================
+   CATEGORY CARDS
+========================================================= */
+
 .category-card {
     border-radius: 16px;
     padding: 30px;
@@ -126,12 +211,85 @@ body {
     box-shadow: 0 20px 40px rgba(0,0,0,0.15);
 }
 
-.a { background: linear-gradient(135deg,#3776ab,#4f9fd9); }
-.b { background: linear-gradient(135deg,#059669,#10b981); }
-.c { background: linear-gradient(135deg,#b91c1c,#ef4444); }
-.d { background: linear-gradient(135deg,#0ea5e9,#38bdf8); }
+.a {
+    background: linear-gradient(135deg,#3776ab,#4f9fd9);
+}
 
-/* FOOTER */
+.b {
+    background: linear-gradient(135deg,#059669,#10b981);
+}
+
+.c {
+    background: linear-gradient(135deg,#b91c1c,#ef4444);
+}
+
+.d {
+    background: linear-gradient(135deg,#0ea5e9,#38bdf8);
+}
+
+/* =========================================================
+   BOTÕES
+========================================================= */
+
+.btn-primary {
+    background-color: #2563eb;
+    border: none;
+    font-weight: 600;
+    padding: 12px;
+    border-radius: 10px;
+    transition: .2s;
+}
+
+.btn-primary:hover {
+    background-color: #1d4ed8;
+    transform: translateY(-1px);
+}
+
+.btn-secondary {
+    background: #64748b;
+    border: none;
+    color: white;
+    font-weight: 600;
+    padding: 12px;
+    border-radius: 10px;
+}
+
+.btn-secondary:hover {
+    background: #475569;
+    color: white;
+}
+
+/* =========================================================
+   LINKS
+========================================================= */
+
+.read-more {
+    color: #2563eb;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+/* =========================================================
+   FORMULÁRIOS
+========================================================= */
+
+.form-control {
+    border: 1px solid #e2e8f0;
+    padding: 12px 15px;
+    border-radius: 10px;
+    font-size: 14px;
+    transition: .2s;
+}
+
+.form-control:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 4px rgba(37,99,235,0.1);
+}
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
 .footer {
     margin-top: 80px;
     padding: 40px 0;
@@ -141,125 +299,22 @@ body {
     background: #fff;
 }
 
-/* RESPONSIVIDADE */
-@media (max-width: 992px) {
-    .hero h1 { font-size: 36px; }
-}
-
-@media (max-width: 768px) {
-    .hero { text-align: center; }
-    .hero p { margin: auto; }
-}
-
-/* AJUSTES PARA FORMULÁRIOS */
-.form-control {
-    border: 1px solid #e2e8f0;
-    padding: 12px 15px;
-    border-radius: 10px;
-    font-size: 14px;
-    transition: all 0.2s ease;
-}
-
-.form-control:focus {
-    border-color: #2563eb;
-    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
-}
-
-.btn-primary {
-    background-color: #2563eb;
-    border: none;
-    font-weight: 600;
-    padding: 12px;
-    border-radius: 10px;
-    transition: transform 0.2s;
-}
-
-.btn-primary:hover {
-    background-color: #1d4ed8;
-    transform: translateY(-1px);
-}
-
-
-body {
-  transition: 0.3s;
-}
-
-.card:hover {
-  transform: translateY(-5px);
-}
-
-.tag {
-  background: #2563eb;
-  color: white;
-  font-size: 12px;
-  padding: 5px 10px;
-  border-radius: 999px;
-  display: inline-block;
-  margin-bottom: 10px;
-}
-
-.card h2 {
-  margin: 10px 0;
-}
-
-.card p {
-  color: #6b7280;
-}
-
-.meta {
-  font-size: 12px;
-  color: #9ca3af;
-  margin: 10px 0;
-}
-
-.read-more {
-  color: #2563eb;
-  text-decoration: none;
-  font-weight: 500;
-}
-
-/* RESPONSIVO */
-@media (max-width: 768px) {
-  .hero {
-    flex-direction: column;
-  }
-}
-
-.featured-card {
-  gap: 20px;
-}
-
-.featured-content {
-  flex: 1;
-}
-
-.featured-image {
-  flex: 1;
-  text-align: right;
-}
-
-.featured-image img {
-  max-width: 100%;
-  height: auto;
-  border-radius: 10px;
-}
-.read-more {
-  color: #2563eb;
-  text-decoration: none;
-  font-weight: 500;
-} 
-
+/* =========================================================
+   TERMINAL HERO
+========================================================= */
 
 .hero-box {
     background: #0f172a;
     border-radius: 18px;
     overflow: hidden;
-    box-shadow: 0 25px 60px rgba(15, 23, 42, 0.25);
-    border: 1px solid rgba(255,255,255,0.05);
-    max-width: 420px;
+    box-shadow: 0 25px 60px rgba(15,23,42,.25);
+    border: 1px solid rgba(255,255,255,.05);
+    width: 100%;
+    max-width: 480px;
 }
 
 /* TOPO TERMINAL */
+
 .terminal-top {
     background: #1e293b;
     padding: 12px 16px;
@@ -290,10 +345,10 @@ body {
     margin-left: auto;
     font-size: 12px;
     color: #94a3b8;
-    font-family: 'Inter', sans-serif;
 }
 
-/* CORPO */
+/* BODY TERMINAL */
+
 .terminal-body {
     padding: 22px;
     font-family: monospace;
@@ -311,59 +366,161 @@ body {
     font-weight: bold;
 }
 
-/* SUCCESS */
 .success {
     margin-top: 20px;
-    background: rgba(16,185,129,0.1);
-    border: 1px solid rgba(16,185,129,0.2);
+    background: rgba(16,185,129,.1);
+    border: 1px solid rgba(16,185,129,.2);
     color: #10b981;
     padding: 12px;
     border-radius: 10px;
     font-size: 13px;
 }
 
-/* HERO */
-.hero {
-    min-height: 80vh;
-    display: flex;
-    align-items: center;
-}
+/* =========================================================
+   POST PAGE
+========================================================= */
 
-/* HERO TITLE */
-.hero h1 span {
-    background: linear-gradient(90deg, #2563eb, #7c3aed);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
+/* HERO IMAGE */
 
-/* BOTÃO SECUNDÁRIO */
-.btn-secondary {
-    background: #64748b;
-    border: none;
-    color: white;
-    font-weight: 600;
-    padding: 12px;
-    border-radius: 10px;
-}
-
-.btn-secondary:hover {
-    background: #475569;
-    color: white;
-}
-
-/* TERMINAL */
-.hero-box {
+.post-hero {
     width: 100%;
-    max-width: 480px;
+    height: 420px;
+    overflow: hidden;
+    border-radius: 24px;
 }
 
-/* MOBILE */
+.post-hero img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: .4s;
+}
+
+.post-hero:hover img {
+    transform: scale(1.02);
+}
+
+/* POST TITLE */
+
+.post-title {
+    line-height: 1.15;
+    letter-spacing: -1px;
+    color: #0f172a;
+}
+
+/* POST BODY */
+
+.post-body {
+    color: #334155;
+    line-height: 1.95;
+    font-weight: 400;
+}
+
+.post-body p {
+    margin-bottom: 1.7rem;
+}
+
+/* HEADINGS */
+
+.post-body h1,
+.post-body h2,
+.post-body h3,
+.post-body h4 {
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+    font-weight: 800;
+    color: #0f172a;
+    line-height: 1.3;
+}
+
+/* IMAGES */
+
+.post-body img {
+    max-width: 100%;
+    border-radius: 18px;
+    margin: 2.5rem 0;
+    box-shadow: 0 10px 25px rgba(0,0,0,.08);
+}
+
+/* CODE */
+
+.post-body pre {
+    background: #0f172a;
+    color: #f8fafc;
+    padding: 1.5rem;
+    border-radius: 14px;
+    overflow-x: auto;
+    margin: 2rem 0;
+}
+
+.post-body code {
+    background: #f1f5f9;
+    padding: .2rem .4rem;
+    border-radius: 6px;
+    font-size: .95rem;
+}
+
+/* BLOCKQUOTE */
+
+.post-body blockquote {
+    border-left: 5px solid #0d6efd;
+    background: #f8fafc;
+    padding: 1.5rem;
+    border-radius: 12px;
+    margin: 2rem 0;
+    color: #475569;
+    font-style: italic;
+}
+
+/* LIST */
+
+.post-body ul,
+.post-body ol {
+    padding-left: 1.5rem;
+    margin-bottom: 1.8rem;
+}
+
+.post-body li {
+    margin-bottom: .7rem;
+}
+
+/* TABLE */
+
+.post-body table {
+    width: 100%;
+    margin: 2rem 0;
+    border-collapse: collapse;
+}
+
+.post-body table th,
+.post-body table td {
+    border: 1px solid #e2e8f0;
+    padding: 1rem;
+}
+
+.post-body table th {
+    background: #f8fafc;
+}
+
+/* =========================================================
+   RESPONSIVIDADE
+========================================================= */
+
+@media (max-width: 992px) {
+
+    .hero h1 {
+        font-size: 36px;
+    }
+
+}
+
 @media (max-width: 768px) {
 
     .hero {
         text-align: center;
         min-height: auto;
         padding: 80px 0;
+        flex-direction: column;
     }
 
     .hero p {
@@ -373,4 +530,17 @@ body {
     .hero-box {
         margin-top: 20px;
     }
+
+    .post-hero {
+        height: 240px;
+    }
+
+    .post-title {
+        font-size: 2rem;
+    }
+
+    .post-body {
+        font-size: 1.05rem !important;
+    }
+
 }
