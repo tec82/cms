@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, abort
 from flask_login import current_user
-from models import Favorite, Post, Category, db
+from models import PostView,Favorite, Post, Category, db
 from sqlalchemy import func
 import json
 
@@ -64,6 +64,14 @@ def post_detail(slug):
     favorite = None
 
     if current_user.is_authenticated and not current_user.is_super_user:
+        # REGISTRA VISUALIZAÇÃO
+        existing_view = PostView.query.filter_by(user_id=current_user.id,post_id=post.id).first()
+        if not existing_view:
+            view = PostView(user_id=current_user.id,post_id=post.id)
+            db.session.add(view)
+            db.session.commit()
+
+        # EXIBE SE O POST ESTÁ NOS FAVORITOS DO USUÁRIO
         favorite = Favorite.query.filter_by(
             user_id=current_user.id,
             post_id=post.id

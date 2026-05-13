@@ -5,7 +5,6 @@ from models import (db,Post,Favorite,Payment,PostView)
 
 dashboard_bp = Blueprint('dashboard', __name__,url_prefix='/dashboard')
 
-
 # =========================================================
 # DASHBOARD HOME
 # =========================================================
@@ -22,11 +21,7 @@ def index():
     recent_views = db.session.query(PostView, Post).join(Post, Post.id == PostView.post_id).filter(PostView.user_id == current_user.id).order_by(PostView.viewed_at.desc()).limit(5).all()
 
     # Últimos pagamentos
-    recent_payments = Payment.query.filter_by(
-        user_id=current_user.id
-    ).order_by(
-        Payment.created_at.desc()
-    ).limit(5).all()
+    recent_payments = Payment.query.filter_by(user_id=current_user.id).order_by(Payment.created_at.desc()).limit(5).all()
 
     return render_template(
         'dashboard/index.html',
@@ -130,7 +125,7 @@ def remove_favorite(id):
 
     return redirect(url_for('dashboard.favorites'))
 
-'''
+
 # =========================================================
 # HISTÓRICO
 # =========================================================
@@ -168,30 +163,3 @@ def payments():
         payments=payments
     )
 
-
-# =========================================================
-# POSTS PREMIUM
-# =========================================================
-@dashboard_bp.route('/premium')
-@login_required
-def premium_posts():
-
-    if not current_user.is_premium:
-
-        flash(
-            'Você precisa de um plano premium.',
-            'warning'
-        )
-
-        return redirect(url_for('dashboard.index'))
-
-    posts = Post.query.filter_by(
-        is_paid=True
-    ).order_by(
-        Post.created_at.desc()
-    ).all()
-
-    return render_template(
-        'dashboard/premium.html',
-        posts=posts
-    )'''

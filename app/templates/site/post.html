@@ -58,7 +58,7 @@
             </div>
 
             <!-- FAVORITE -->
-            {% if current_user.is_authenticated %}
+            {% if current_user.is_authenticated and not current_user.is_super_user %}
 
               {% if favorite %}
 
