@@ -7,13 +7,15 @@ db = SQLAlchemy()
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(100), unique=True)
-    password = db.Column(db.String(200))    
+    email = db.Column(db.String(150), unique=True)
+    password = db.Column(db.String(200), nullable=True)
+    avatar = db.Column(db.String(500))
+    provider = db.Column(db.String(50))
+    google_id = db.Column(db.String(200))
+    github_id = db.Column(db.String(200))
+
     is_super_user = db.Column(db.Boolean, default=False)
 
-class Purchase(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer)
-    
 class Category(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100))
@@ -42,7 +44,7 @@ class Favorite(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer,db.ForeignKey('user.id'))
     post_id = db.Column(db.Integer,db.ForeignKey('post.id'))
-    created_at = db.Column(db.DateTime,default=datetime.utcnow)
+    created_at = db.Column(db.DateTime,default=lambda: datetime.now(timezone.utc))
 
 class Payment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -55,10 +57,39 @@ class Payment(db.Model):
     provider = db.Column(db.String(50))
     # stripe
     # mercado_pago
-    created_at = db.Column(db.DateTime,default=datetime.utcnow)
+    created_at = db.Column(db.DateTime,default=lambda: datetime.now(timezone.utc))
+
 
 class PostView(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer,db.ForeignKey('user.id'))
-    post_id = db.Column(db.Integer,db.ForeignKey('post.id'))
-    viewed_at = db.Column(db.DateTime,default=datetime.utcnow)
+    id = db.Column(db.Integer,primary_key=True)
+    user_id = db.Column(db.Integer,db.ForeignKey('user.id'),nullable=False)
+    post_id = db.Column(db.Integer,db.ForeignKey('post.id'),nullable=False)
+    viewed_at = db.Column(db.DateTime(timezone=True),default=lambda: datetime.now(timezone.utc),nullable=False)
+
+    # Impede visualizações duplicadas
+    __table_args__ = (
+        db.UniqueConstraint(
+            'user_id',
+            'post_id',
+            name='unique_user_post_view'
+        ),
+    )
+
+    # Relacionamentos
+    user = db.relationship(
+        'User',
+        backref=db.backref(
+            'views',
+            lazy=True,
+            cascade='all, delete-orphan'
+        )
+    )
+
+    post = db.relationship(
+        'Post',
+        backref=db.backref(
+            'views',
+            lazy=True,
+            cascade='all, delete-orphan'
+        )
+    )

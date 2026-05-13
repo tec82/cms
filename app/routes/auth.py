@@ -19,7 +19,7 @@ def register():
         user = User(
             username=username,
             password=generate_password_hash(request.form['password']),            
-            is_super_user=True 
+            is_super_user=False 
         )
         db.session.add(user)
         db.session.commit()
