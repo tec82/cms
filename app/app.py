@@ -7,9 +7,6 @@ from flask_login import LoginManager
 from routes.site import site_bp
 from routes.admin import admin_bp
 from routes.auth import auth_bp
-from routes.dashboard import dashboard_bp
-
-from auth.oauth import oauth
 
 import cloudinary
 import cloudinary.uploader
@@ -25,22 +22,8 @@ cloudinary.config(
 )
 
 app = Flask(__name__)
-
-
-# AUTENTICACAO DE REDES SOCIAIS
-oauth.init_app(app)
-
-# Flask
-app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
-
-if not DEBUG:
-    # MySQL
-    app.config['SQLALCHEMY_DATABASE_URI'] = (
-        f"mysql+pymysql://{os.getenv('DB_USER')}:{os.getenv('DB_PASSWORD')}"
-        f"@{os.getenv('DB_HOST')}/{os.getenv('DB_NAME')}"
-    )
-else:
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite3'
+app.config['SECRET_KEY'] = 'secret'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite3'
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
@@ -67,5 +50,4 @@ app.register_blueprint(dashboard_bp)
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
-
-    app.run(host="localhost", port=5000, debug=DEBUG)
+    app.run(debug=True)
