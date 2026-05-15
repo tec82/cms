@@ -3,10 +3,13 @@ import os
 from flask import Flask
 from models import db, User
 from flask_login import LoginManager
+
 from routes.site import site_bp
 from routes.admin import admin_bp
 from routes.auth import auth_bp
 from routes.dashboard import dashboard_bp
+
+from auth.oauth import oauth
 
 import cloudinary
 import cloudinary.uploader
@@ -22,6 +25,10 @@ cloudinary.config(
 )
 
 app = Flask(__name__)
+
+
+# AUTENTICACAO DE REDES SOCIAIS
+oauth.init_app(app)
 
 # Flask
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
@@ -60,4 +67,5 @@ app.register_blueprint(dashboard_bp)
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
-    app.run(host="0.0.0.0", port=5000, debug=DEBUG)
+
+    app.run(host="localhost", port=5000, debug=DEBUG)

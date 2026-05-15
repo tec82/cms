@@ -1,61 +1,388 @@
-{% extends 'base.html' %} {% block content %}
-<div
-  class="container d-flex justify-content-center align-items-center"
-  style="min-height: 80vh"
->
-  <div class="col-md-5 col-lg-4">
-    <div class="featured-card">
-      <div class="text-center mb-4">
-        <div class="badge-dev mb-3">Acesso Restrito</div>
-        <h2 class="fw-bold">Bem-vindo de volta</h2>
-        <p class="text-muted small">
-          Entre com suas credenciais para gerenciar seus posts
-        </p>
-      </div>
+{% extends 'base.html' %}
 
-      <form method="POST">
-        <div class="mb-3">
-          <label class="form-label fw-semibold small">Usuário</label>
-          <input
-            name="username"
-            class="form-control"
-            placeholder="Digite seu usuário"
-            required
-          />
+{% block content %}
+
+<section class="login-section">
+
+    <div class="container">
+
+        <div class="row align-items-center justify-content-center g-5">
+
+            <!-- LEFT CONTENT -->
+            <div class="col-lg-6 d-none d-lg-block">
+
+                <div class="login-hero">
+
+                    <div class="badge-dev mb-4">
+                        Plataforma Premium
+                    </div>
+
+                    <h1 class="display-4 fw-bold mb-4">
+                        Aprenda programação com conteúdos
+                        <span>profissionais</span>
+                    </h1>
+
+                    <p class="text-muted fs-5 mb-5">
+                        Acesse artigos exclusivos, conteúdos premium,
+                        favoritos, histórico de leitura e muito mais
+                        utilizando sua conta Google.
+                    </p>
+
+                    <div class="hero-benefits">
+
+                        <div class="benefit-item">
+                            <div class="benefit-icon">
+                                🚀
+                            </div>
+
+                            <div>
+                                <h6 class="fw-bold mb-1">
+                                    Conteúdo Premium
+                                </h6>
+
+                                <p class="text-muted small mb-0">
+                                    Aulas e artigos avançados
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="benefit-item">
+                            <div class="benefit-icon">
+                                ⭐
+                            </div>
+
+                            <div>
+                                <h6 class="fw-bold mb-1">
+                                    Favoritos
+                                </h6>
+
+                                <p class="text-muted small mb-0">
+                                    Salve conteúdos importantes
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="benefit-item">
+                            <div class="benefit-icon">
+                                📚
+                            </div>
+
+                            <div>
+                                <h6 class="fw-bold mb-1">
+                                    Histórico
+                                </h6>
+
+                                <p class="text-muted small mb-0">
+                                    Continue de onde parou
+                                </p>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- LOGIN CARD -->
+            <div class="col-md-8 col-lg-5">
+
+                <div class="login-card">
+
+                    <div class="text-center mb-5">
+
+                        <div class="login-logo mb-4">
+                            &lt;/&gt;
+                        </div>
+
+                        <h2 class="fw-bold mb-3">
+                            Entrar na Plataforma
+                        </h2>
+
+                        <p class="text-muted">
+                            Utilize sua conta Google para continuar
+                        </p>
+
+                    </div>
+
+                    <!-- GOOGLE LOGIN -->
+                    <a
+                        href="{{ url_for('auth.login_google') }}"
+                        class="google-btn"
+                    >
+
+                        <img
+                            src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/google/google-original.svg"
+                            width="22"
+                        >
+
+                        <span>
+                            Continuar com Google
+                        </span>
+
+                    </a>
+
+                    <div class="secure-info">
+
+                        <div class="secure-icon">
+                            🔒
+                        </div>
+
+                        <p class="mb-0 small text-muted">
+                            Login seguro utilizando autenticação oficial do Google.
+                        </p>
+
+                    </div>
+
+                    <div class="text-center mt-5">
+
+                        <a
+                            href="{{ url_for('site.index') }}"
+                            class="back-home"
+                        >
+                            ← Voltar para Home
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
         </div>
 
-        <div class="mb-3">
-          <label class="form-label fw-semibold small">Senha</label>
-          <input
-            type="password"
-            name="password"
-            class="form-control"
-            placeholder="••••••••"
-            required
-          />
-        </div>
-
-        <div class="d-grid mt-4">
-          <button class="btn btn-primary btn-lg shadow-sm">
-            Entrar no Painel
-          </button>
-        </div>
-      </form>
-
-      <div class="text-center mt-4">
-        <p class="text-muted small mb-0">
-          Não tem uma conta?
-          <a
-            href="{{ url_for('auth.register') }}"
-            class="text-primary fw-bold text-decoration-none"
-            >Registrar-se</a
-          >
-        </p>
-        <a href="/" class="text-muted small text-decoration-none"
-          >← Voltar para a Home</a
-        >
-      </div>
     </div>
-  </div>
-</div>
+
+</section>
+
+<style>
+
+/* SECTION */
+.login-section {
+
+    min-height: 90vh;
+
+    display: flex;
+    align-items: center;
+
+    padding: 60px 0;
+
+}
+
+/* HERO */
+.login-hero h1 {
+
+    line-height: 1.15;
+    color: #0f172a;
+
+}
+
+.login-hero h1 span {
+
+    background: linear-gradient(
+        90deg,
+        #2563eb,
+        #7c3aed
+    );
+
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+
+}
+
+/* BENEFITS */
+.hero-benefits {
+
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+}
+
+.benefit-item {
+
+    display: flex;
+    align-items: center;
+    gap: 18px;
+
+    background: white;
+
+    padding: 20px;
+
+    border-radius: 18px;
+
+    box-shadow:
+        0 10px 30px rgba(0,0,0,.04);
+
+}
+
+.benefit-icon {
+
+    width: 52px;
+    height: 52px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 14px;
+
+    background: #eff6ff;
+
+    font-size: 22px;
+
+}
+
+/* CARD */
+.login-card {
+
+    background: white;
+
+    padding: 50px;
+
+    border-radius: 28px;
+
+    box-shadow:
+        0 25px 70px rgba(15,23,42,.08);
+
+    border: 1px solid #e2e8f0;
+
+}
+
+/* LOGO */
+.login-logo {
+
+    width: 75px;
+    height: 75px;
+
+    margin: auto;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 22px;
+
+    background: linear-gradient(
+        135deg,
+        #2563eb,
+        #7c3aed
+    );
+
+    color: white;
+
+    font-size: 28px;
+    font-weight: 800;
+
+    box-shadow:
+        0 10px 30px rgba(37,99,235,.25);
+
+}
+
+/* GOOGLE BUTTON */
+.google-btn {
+
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+
+    padding: 16px;
+
+    border-radius: 16px;
+
+    border: 1px solid #e2e8f0;
+
+    background: white;
+
+    text-decoration: none;
+
+    color: #0f172a;
+
+    font-weight: 600;
+    font-size: 16px;
+
+    transition: .3s;
+
+}
+
+.google-btn:hover {
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 15px 35px rgba(0,0,0,.08);
+
+    color: #0f172a;
+
+}
+
+/* SECURE INFO */
+.secure-info {
+
+    margin-top: 30px;
+
+    background: #f8fafc;
+
+    border-radius: 16px;
+
+    padding: 18px;
+
+    display: flex;
+    align-items: center;
+    gap: 14px;
+
+}
+
+.secure-icon {
+
+    width: 40px;
+    height: 40px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 12px;
+
+    background: #ecfdf5;
+
+    font-size: 18px;
+
+}
+
+/* BACK HOME */
+.back-home {
+
+    text-decoration: none;
+
+    color: #64748b;
+
+    font-weight: 500;
+
+    transition: .3s;
+
+}
+
+.back-home:hover {
+
+    color: #2563eb;
+
+}
+
+/* MOBILE */
+@media(max-width:768px){
+
+    .login-card {
+
+        padding: 35px 25px;
+
+    }
+
+}
+
+</style>
+
 {% endblock %}
