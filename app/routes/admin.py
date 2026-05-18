@@ -13,11 +13,7 @@ admin_bp = Blueprint('admin', __name__, url_prefix='/admin')
 @login_required
 def protect_admin():
     if not current_user.is_super_user:
-        return redirect(url_for('auth.logout'))
-        '''flash(
-            'Você não possui permissão para acessar esta área.',
-            'danger'
-        )'''
+        return redirect(url_for('auth.logout'))       
 
 @admin_bp.route('/')
 def dashboard():
@@ -27,49 +23,53 @@ def dashboard():
 
 @admin_bp.route('/create', methods=['GET', 'POST'])
 def create_post():
-
     if request.method == 'POST':
+        try:
 
-        title = request.form['title']
-        content = request.form.get('content')
-        category_id = request.form.get('category_id')
-        category = Category.query.get(category_id)
+                title = request.form['title']
+                content = request.form.get('content')
+                category_id = request.form.get('category_id')
+                category = Category.query.get(category_id)
 
-        image = request.files.get('image')
-        url = None
+                image = request.files.get('image')
+                url = None
 
-        if image:
-            result = cloudinary.uploader.upload(
-                image,
-                folder="posts",
-                width=800,
-                crop="scale",
-            )
+                post = Post(
+                    title=title,
+                    slug=slugify(title),
+                    content=content,
+                    is_draft=True if request.form.get('is_draft') else False,            
+                    category=category,
+                    is_paid=True if request.form.get('paid') else False,
+                    is_detach=True if request.form.get('is_detach') else False,
+                    image_url='/static/img/default-post.jpg'
+                )
 
-            url = result['secure_url']
+                db.session.add(post)
+                db.session.commit()
 
-        post = Post(
-            title=title,
-            slug=slugify(title),
-            content=content,
-            is_draft=True if request.form.get('is_draft') else False,            
-            category=category,
-            is_paid=True if request.form.get('paid') else False,
-            is_detach=True if request.form.get('is_detach') else False,
-            image_url=url
-        )
+                if image:                                        
+                    result = cloudinary.uploader.upload(
+                        image,
+                        folder="posts",
+                        width=800,
+                        crop="scale",
+                        overwrite=True
+                    )
+                    
+                    post.image_url = result['secure_url']
+                    db.session.commit()
 
-        db.session.add(post)
-        db.session.commit()
-
-        return redirect(url_for('admin.dashboard'))
+        except Exception as e:            
+            db.session.rollback()
+            flash('Erro ao criar post.','danger')
+        
+        except Exception as cloud_error:            
+            db.session.rollback()
+            flash('Post criado, mas houve erro no upload da imagem.','warning')
 
     categories = Category.query.all()
-
-    return render_template(
-        'admin/posts/create_post.html',
-        categories=categories
-    )
+    return render_template('admin/posts/create_post.html',categories=categories)
 
 @admin_bp.route('/update/<int:id>', methods=['GET', 'POST'])
 def update_post(id):
@@ -77,38 +77,46 @@ def update_post(id):
     post = Post.query.get_or_404(id)
 
     if request.method == 'POST':
+        try:
+            post.title = request.form.get('title')
+            post.slug = slugify(post.title)
+            post.content = request.form.get('content')
+            post.is_draft = True if request.form.get('is_draft') else False
+            post.is_paid = True if request.form.get('paid') else False
+            post.is_detach = True if request.form.get('is_detach') else False
 
-        post.title = request.form.get('title')
-        post.slug = slugify(post.title)
-        post.content = request.form.get('content')
-        post.is_draft = True if request.form.get('is_draft') else False
-        post.is_paid = True if request.form.get('paid') else False
-        post.is_detach = True if request.form.get('is_detach') else False
+            # Categoria
+            category_id = request.form.get('category_id')
 
-        # Categoria
-        category_id = request.form.get('category_id')
+            if category_id:
+                post.category_id = int(category_id)
 
-        if category_id:
-            post.category_id = int(category_id)
+            # Upload da imagem
+            image = request.files.get('image')
 
-        # Upload da imagem
-        image = request.files.get('image')
+            if image:
 
-        if image:
+                result = cloudinary.uploader.upload(
+                    image,
+                    folder="posts",
+                    width=800,
+                    crop="scale",
+                    overwrite=True
+                )
 
-            result = cloudinary.uploader.upload(
-                image,
-                folder="posts",
-                width=800,
-                crop="scale",
-                overwrite=True
-            )
+                post.image_url = result['secure_url']
 
-            post.image_url = result['secure_url']
+            db.session.commit()
 
-        db.session.commit()
+            return redirect(url_for('admin.dashboard'))
 
-        return redirect(url_for('admin.dashboard'))
+        except Exception as e:            
+            db.session.rollback()
+            flash('Erro ao criar post.','danger')
+        
+        except Exception as cloud_error:            
+            db.session.rollback()
+            flash('Post criado, mas houve erro no upload da imagem.','warning')
 
     categories = Category.query.all()
 

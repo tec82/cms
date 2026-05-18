@@ -7,44 +7,10 @@ from auth.oauth import google
 
 auth_bp = Blueprint('auth', __name__, url_prefix='/auth')
 
-# REGISTER
-@auth_bp.route('/register', methods=['GET','POST'])
-def register():
-    if request.method == 'POST':
-        username = request.form.get('username')
-        user_exists = User.query.filter(User.username == username).first()
-
-        if user_exists:
-            flash('Este usuário já existe.', 'danger')
-            return redirect(url_for('auth.register'))
-        
-        user = User(
-            username=username,
-            password=generate_password_hash(request.form['password']),            
-            is_super_user=False 
-        )
-        db.session.add(user)
-        db.session.commit()
-
-        flash('Usuário registrado com sucesso.', 'success')
-        return redirect(url_for('auth.login'))
-    
-    return render_template('auth/register.html')
 
 # LOGIN
 @auth_bp.route('/', methods=['GET','POST'])
 def login():
-    if request.method == 'POST':
-        user = User.query.filter_by(username=request.form['username']).first()
-        if user and user.password and check_password_hash(user.password,request.form['password']):
-            login_user(user)
-            if user.is_super_user:
-                return redirect(url_for('admin.dashboard'))
-            else:
-                return redirect(url_for('dashboard.index'))
-        else:
-            flash('Usuário ou senha inválidos.', 'danger')            
-        
     return render_template('auth/login.html')
 
 # LOGOUT
@@ -55,8 +21,7 @@ def logout():
     return redirect(url_for('auth.login'))
 
 @auth_bp.route('/profile', methods=['GET','POST'])
-def profile():
-    
+def profile():    
     if request.method == 'POST':        
         current_password = request.form.get('current_password')
         new_password = request.form.get('new_password')
@@ -97,7 +62,6 @@ def login_google():
         'auth.google_callback',
         _external=True
     )
-    print(redirect_uri)
 
     return google.authorize_redirect(redirect_uri)
 
@@ -107,40 +71,25 @@ def login_google():
 def google_callback():
 
     token = google.authorize_access_token()
-
     user_info = token['userinfo']
-
     google_id = user_info['sub']
-
     email = user_info['email']
-
     user = User.query.filter_by(email=email).first()
 
     if not user:
-
         user = User(
-
             username=user_info['name'],
-
             email=email,
-
             google_id=google_id,
-
             avatar=user_info['picture'],
-
             provider='google',
-
-            password=None
+            password=None            
         )
-
         db.session.add(user)
-
     else:
-
         user.google_id = google_id
 
     db.session.commit()
-
     login_user(user)
 
     flash(
