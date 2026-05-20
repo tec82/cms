@@ -93,6 +93,67 @@
 </section>
 {% endif %}
 
+{% if recent_posts %}
+<section class="recent-posts">
+
+    <div class="container">
+
+        <div class="section-header">
+            <h3>RECENTES</h3>
+
+            <a href="{{ url_for('site.posts') }}">
+                Ver todos →
+            </a>
+        </div>
+
+        <div class="posts-grid">
+
+            {% for post in recent_posts %}
+
+            <article class="post-card">
+
+                <span class="category" style="background: linear-gradient(135deg,#dc2626,#ef4444);">
+                    {{ post.category.name if post.category else 'Geral' }}
+                </span>
+
+                <h4>
+                    {{ post.title }}
+                </h4>
+
+                <p>
+                    {{ post.content | striptags | truncate(90) }}
+                </p>
+
+                <div class="meta">
+
+                    {% if post.created_at %}
+                        {{ post.created_at.strftime('%d %b %Y') }}
+                    {% endif %}
+
+                    •
+
+                    {{ post.read_time if post.read_time else 5 }} min
+
+                </div>
+
+                <a
+                  href="{{ url_for('site.post_detail', slug=post.slug) }}"
+                  class="post-link"
+                >
+                    Ler artigo →
+                </a>
+
+            </article>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+</section>
+{% endif %}
+
 <section class="container py-5">
   <div class="section-title mb-4">CATEGORIAS</div>
 
@@ -102,7 +163,7 @@
     <div class="col-lg-3 col-md-6">
 
       <a href="{{ url_for('site.posts', category=category.slug) }}"
-         class="category-card {{ loop.cycle('a','b','c','d') }} text-decoration-none d-block">
+         class="category-card text-decoration-none d-block" style="background: linear-gradient(135deg,#dc2626,#ef4444);">
 
         <div class="category-content">
           <h5 class="mb-2">{{ category.name }}</h5>

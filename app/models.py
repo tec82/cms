@@ -23,6 +23,7 @@ class Category(db.Model):
     description = db.Column(db.String(200))
     is_paid = db.Column(db.Boolean, default=False)    
     is_detach = db.Column(db.Boolean, default=False)
+    style = db.Column(db.String(100))
 
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)

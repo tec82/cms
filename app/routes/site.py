@@ -10,6 +10,7 @@ site_bp = Blueprint('site', __name__)
 def index():    
     # POST DESTAQUE (último post)
     featured = Post.query.filter(Post.is_detach == True).first()     
+    recent_posts = Post.query.filter(Post.is_detach == False).order_by(Post.id.desc()).limit(5).all()
 
     # CATEGORIAS + CONTAGEM 
     categories = db.session.query(
@@ -20,6 +21,7 @@ def index():
     return render_template(
         'site/index.html',
         featured=featured,
+        recent_posts=recent_posts,
         categories=categories
     )
 

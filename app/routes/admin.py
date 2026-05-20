@@ -65,7 +65,7 @@ def create_post():
             flash('Erro ao criar post.','danger')
         
         except Exception as cloud_error:            
-            db.session.rollback()
+            #db.session.rollback()
             flash('Post criado, mas houve erro no upload da imagem.','warning')
 
     categories = Category.query.all()
@@ -150,11 +150,13 @@ def create_category():
 
         name = request.form.get('name')
         description = request.form.get('description')
+        style = request.form.get('style')
 
         category = Category(
             name=name,
             slug=slugify(name),
             description=description,
+            style=style,
             is_paid=True if request.form.get('paid') else False,
             is_detach=True if request.form.get('is_detach') else False,
         )
@@ -177,7 +179,9 @@ def update_category(id):
         category.slug = slugify(category.name)
         category.description = request.form.get('description')
         category.is_paid = True if request.form.get('paid') else False
-        category.is_detach = True if request.form.get('is_detach') else False   
+        category.is_detach = True if request.form.get('is_detach') else False
+        category.style = request.form.get('style')
+
         db.session.commit()
 
         return redirect(url_for('admin.categories'))
