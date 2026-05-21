@@ -1,0 +1,446 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<!-- =========================================
+SECTION: TRILHAS / LABS
+========================================= -->
+
+<section class="trilhas-section py-5">
+
+  <div class="container">
+
+    <!-- HEADER -->
+    <div class="section-header text-center mb-5">
+
+      <span class="badge-trilhas">
+        🚀 Trilhas de Aprendizado
+      </span>
+
+      <h2 class="section-title mt-3">
+        Aprenda construindo projetos reais
+      </h2>
+
+      <p class="section-subtitle">
+        Escolha uma trilha prática e evolua passo a passo
+        até publicar aplicações profissionais.
+      </p>
+
+    </div>
+
+    <!-- GRID -->
+    <div class="row g-4">
+
+      <!-- CARD 1 -->
+      <div class="col-lg-4">
+
+        <div class="trilha-card">
+
+          <div class="trilha-top">
+
+            <div class="icon-box">
+              🐍
+            </div>
+
+            <span class="nivel iniciante">
+              Iniciante
+            </span>
+
+          </div>
+
+          <h3>
+            Backend com Python
+          </h3>
+
+          <p>
+            Aprenda Flask, APIs REST, autenticação JWT,
+            PostgreSQL e deploy profissional.
+          </p>
+
+          <!-- STACK -->
+          <div class="stack-tags">
+
+            <span>Python</span>
+            <span>Flask</span>
+            <span>PostgreSQL</span>
+            <span>JWT</span>
+
+          </div>
+
+          <!-- PROGRESS -->
+          <div class="progress-wrapper">
+
+            <div class="progress-info">
+              <span>Progresso</span>
+              <span>35%</span>
+            </div>
+
+            <div class="custom-progress">
+              <div class="custom-progress-bar w-35"></div>
+            </div>
+
+          </div>
+
+          <!-- MODULES -->
+          <ul class="modules-list">
+
+            <li>✓ Introdução ao Python</li>
+            <li>✓ Criando APIs</li>
+            <li>✓ Banco de dados</li>
+            <li>○ Autenticação JWT</li>
+            <li>○ Deploy Linux</li>
+
+          </ul>
+
+          <!-- BUTTON -->
+          <a href="#" class="btn-trilha">
+            Continuar trilha →
+          </a>
+
+        </div>
+
+      </div>
+
+      <!-- CARD 2 -->
+      <div class="col-lg-4">
+
+        <div class="trilha-card">
+
+          <div class="trilha-top">
+
+            <div class="icon-box">
+              🐳
+            </div>
+
+            <span class="nivel intermediario">
+              Intermediário
+            </span>
+
+          </div>
+
+          <h3>
+            Docker na prática
+          </h3>
+
+          <p>
+            Domine containers, Docker Compose,
+            deploy e ambientes profissionais.
+          </p>
+
+          <div class="stack-tags">
+
+            <span>Docker</span>
+            <span>Compose</span>
+            <span>Nginx</span>
+            <span>Linux</span>
+
+          </div>
+
+          <div class="progress-wrapper">
+
+            <div class="progress-info">
+              <span>Progresso</span>
+              <span>10%</span>
+            </div>
+
+            <div class="custom-progress">
+              <div class="custom-progress-bar w-10"></div>
+            </div>
+
+          </div>
+
+          <ul class="modules-list">
+
+            <li>✓ O que é Docker</li>
+            <li>○ Dockerfile</li>
+            <li>○ Docker Compose</li>
+            <li>○ Containers reais</li>
+            <li>○ Deploy VPS</li>
+
+          </ul>
+
+          <a href="#" class="btn-trilha">
+            Explorar trilha →
+          </a>
+
+        </div>
+
+      </div>
+
+      <!-- CARD 3 -->
+      <div class="col-lg-4">
+
+        <div class="trilha-card">
+
+          <div class="trilha-top">
+
+            <div class="icon-box">
+              ⚛️
+            </div>
+
+            <span class="nivel avancado">
+              Avançado
+            </span>
+
+          </div>
+
+          <h3>
+            React Fullstack
+          </h3>
+
+          <p>
+            Crie aplicações modernas consumindo APIs,
+            autenticação e dashboards reais.
+          </p>
+
+          <div class="stack-tags">
+
+            <span>React</span>
+            <span>APIs</span>
+            <span>Hooks</span>
+            <span>Frontend</span>
+
+          </div>
+
+          <div class="progress-wrapper">
+
+            <div class="progress-info">
+              <span>Progresso</span>
+              <span>65%</span>
+            </div>
+
+            <div class="custom-progress">
+              <div class="custom-progress-bar w-65"></div>
+            </div>
+
+          </div>
+
+          <ul class="modules-list">
+
+            <li>✓ React Base</li>
+            <li>✓ Hooks</li>
+            <li>✓ Consumo API</li>
+            <li>✓ Dashboard</li>
+            <li>○ Deploy final</li>
+
+          </ul>
+
+          <a href="#" class="btn-trilha">
+            Ver projeto →
+          </a>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+<style>
+/* =========================================
+TRILHAS SECTION
+========================================= */
+
+.trilhas-section {
+    background: #f8fafc;
+}
+
+/* HEADER */
+
+.badge-trilhas {
+    display: inline-block;
+    background: #e0e7ff;
+    color: #4f46e5;
+    padding: 10px 18px;
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.section-title {
+    font-size: 48px;
+    font-weight: 800;
+    color: #0f172a;
+}
+
+.section-subtitle {
+    color: #64748b;
+    max-width: 700px;
+    margin: auto;
+    font-size: 18px;
+}
+
+/* CARD */
+
+.trilha-card {
+    background: white;
+    border-radius: 28px;
+    padding: 30px;
+    height: 100%;
+    transition: .3s;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 10px 30px rgba(0,0,0,.04);
+}
+
+.trilha-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 50px rgba(0,0,0,.08);
+}
+
+.trilha-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.icon-box {
+    width: 60px;
+    height: 60px;
+    background: #eef2ff;
+    border-radius: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+}
+
+.nivel {
+    padding: 8px 14px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.iniciante {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.intermediario {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.avancado {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+/* TITLES */
+
+.trilha-card h3 {
+    font-size: 28px;
+    font-weight: 800;
+    margin-bottom: 15px;
+    color: #0f172a;
+}
+
+.trilha-card p {
+    color: #64748b;
+    margin-bottom: 24px;
+    line-height: 1.7;
+}
+
+/* TAGS */
+
+.stack-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 28px;
+}
+
+.stack-tags span {
+    background: #f1f5f9;
+    color: #334155;
+    padding: 8px 14px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+/* PROGRESS */
+
+.progress-wrapper {
+    margin-bottom: 28px;
+}
+
+.progress-info {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.custom-progress {
+    width: 100%;
+    height: 10px;
+    background: #e2e8f0;
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+.custom-progress-bar {
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        #2563eb,
+        #7c3aed
+    );
+    border-radius: 999px;
+}
+
+.w-10 {
+    width: 10%;
+}
+
+.w-35 {
+    width: 35%;
+}
+
+.w-65 {
+    width: 65%;
+}
+
+/* MODULES */
+
+.modules-list {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 30px;
+}
+
+.modules-list li {
+    margin-bottom: 12px;
+    color: #334155;
+    font-weight: 500;
+}
+
+/* BUTTON */
+
+.btn-trilha {
+    display: inline-block;
+    width: 100%;
+    text-align: center;
+    background: linear-gradient(
+        90deg,
+        #2563eb,
+        #4f46e5
+    );
+    color: white;
+    text-decoration: none;
+    padding: 16px;
+    border-radius: 16px;
+    font-weight: 700;
+    transition: .3s;
+}
+
+.btn-trilha:hover {
+    opacity: .9;
+    transform: scale(1.02);
+}
+</style>
+{% endblock %}

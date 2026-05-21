@@ -51,7 +51,7 @@ def create_post():
                 if image:                                        
                     result = cloudinary.uploader.upload(
                         image,
-                        folder="posts",
+                        folder="posts", 
                         width=800,
                         crop="scale",
                         overwrite=True

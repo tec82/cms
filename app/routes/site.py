@@ -84,3 +84,8 @@ def post_detail(slug):
          return "Conteúdo pago 🔒"    
 
     return render_template('site/post.html', post=post, favorite=favorite)
+
+
+@site_bp.route('/trilhas')
+def trilhas():  
+    return render_template('site/trilhas.html')

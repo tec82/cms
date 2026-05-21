@@ -112,7 +112,7 @@
 
             <article class="post-card">
 
-                <span class="category" style="background: linear-gradient(135deg,#dc2626,#ef4444);">
+                <span class="category" style="{{ post.category.style}}">
                     {{ post.category.name if post.category else 'Geral' }}
                 </span>
 
@@ -163,7 +163,7 @@
     <div class="col-lg-3 col-md-6">
 
       <a href="{{ url_for('site.posts', category=category.slug) }}"
-         class="category-card text-decoration-none d-block" style="background: linear-gradient(135deg,#dc2626,#ef4444);">
+         class="category-card text-decoration-none d-block" style="{{ category.style }}">
 
         <div class="category-content">
           <h5 class="mb-2">{{ category.name }}</h5>

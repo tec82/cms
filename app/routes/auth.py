@@ -88,7 +88,7 @@ def google_callback():
         db.session.add(user)
     else:
         user.google_id = google_id
-        user.is_super_user = True
+        #user.is_super_user = True
 
     db.session.commit()
     login_user(user)
