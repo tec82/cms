@@ -157,7 +157,7 @@ def create_category():
             slug=slugify(name),
             description=description,
             style=style,
-            is_paid=True if request.form.get('paid') else False,
+            is_paid=True if request.form.get('is_paid') else False,
             is_detach=True if request.form.get('is_detach') else False,
         )
 
@@ -178,7 +178,7 @@ def update_category(id):
         category.name = request.form.get('name')
         category.slug = slugify(category.name)
         category.description = request.form.get('description')
-        category.is_paid = True if request.form.get('paid') else False
+        category.is_paid = True if request.form.get('is_paid') else False
         category.is_detach = True if request.form.get('is_detach') else False
         category.style = request.form.get('style')
 

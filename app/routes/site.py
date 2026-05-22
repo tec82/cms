@@ -87,5 +87,40 @@ def post_detail(slug):
 
 
 @site_bp.route('/trilhas')
-def trilhas():  
-    return render_template('site/trilhas.html')
+def trilhas():
+
+    categories = (
+        Category.query
+        .filter_by(is_paid=True)
+        .order_by(Category.name.asc())
+        .all()
+    )
+
+    return render_template(
+        'site/trilhas.html',
+        categories=categories
+    )
+
+@site_bp.route('/trilhas-detalhes/<slug>')
+def datail_trilhas(slug):
+
+    category = Category.query.filter_by(
+        slug=slug,
+        is_paid=True
+    ).first_or_404()
+
+    posts = (
+        Post.query
+        .filter_by(
+            category_id=category.id,
+            is_draft=False
+        )
+        .order_by(Post.created_at.asc())
+        .all()
+    )
+
+    return render_template(
+        'site/trilha-detail.html',
+        posts=posts,
+        category=category
+    )

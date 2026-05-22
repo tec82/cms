@@ -1,243 +1,104 @@
 {% extends 'base.html' %}
 
 {% block content %}
+
 <!-- =========================================
-SECTION: TRILHAS / LABS
+SECTION: TRILHAS PREMIUM
+Categorias pagas + posts pagos
 ========================================= -->
 
 <section class="trilhas-section py-5">
 
-  <div class="container">
+    <div class="container">
 
-    <!-- HEADER -->
-    <div class="section-header text-center mb-5">
+        <!-- HEADER -->
+        <div class="section-header text-center mb-5">            
 
-      <span class="badge-trilhas">
-        🚀 Trilhas de Aprendizado
-      </span>
+            <h2 class="section-title mt-3">
+                Aprenda com conteúdos organizados
+            </h2>
 
-      <h2 class="section-title mt-3">
-        Aprenda construindo projetos reais
-      </h2>
+            <p class="section-subtitle">
+                Escolha uma trilha prática e siga uma sequência
+                estruturada de conteúdos premium.
+            </p>
 
-      <p class="section-subtitle">
-        Escolha uma trilha prática e evolua passo a passo
-        até publicar aplicações profissionais.
-      </p>
+        </div>
+
+        <!-- GRID -->
+        <div class="row g-4">
+
+            {% for category in categories %}
+
+                <div class="col-lg-4 col-md-6">
+
+                    <div class="trilha-card">
+
+                        <!-- TOPO -->
+                        <div class="trilha-top">
+
+                            <div class="icon-box">🚀</div>
+                              <span class="nivel premium">
+                                    Premium
+                                </span>
+
+                        </div>
+
+                        <!-- TITULO -->
+                        <h3>
+                            {{ category.name }}
+                        </h3>
+
+                        <!-- DESCRICAO -->
+                        <p>
+                            {{ category.description }}
+                        </p>
+
+                        <!-- POSTS -->
+                        {% set posts = category.posts %}                       
+
+                        <!-- PROGRESS VISUAL -->
+                        <div class="progress-wrapper">
+
+                            <div class="progress-info">
+                                <span>Conteúdo disponível</span>
+                                <span>{{ posts|length }} aulas</span>
+                            </div>
+
+                            <div class="custom-progress">
+                                <div
+                                    class="custom-progress-bar"
+                                    style="width: 100%">
+                                </div>
+                            </div>
+
+                        </div>
+
+                       
+
+                        <!-- BUTTON -->
+                        <a
+                            href="{{ url_for('site.datail_trilhas', slug=category.slug) }}"
+                            class="btn-trilha">
+
+                            Explorar trilha →
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+            {% endfor %}
+
+        </div>
 
     </div>
-
-    <!-- GRID -->
-    <div class="row g-4">
-
-      <!-- CARD 1 -->
-      <div class="col-lg-4">
-
-        <div class="trilha-card">
-
-          <div class="trilha-top">
-
-            <div class="icon-box">
-              🐍
-            </div>
-
-            <span class="nivel iniciante">
-              Iniciante
-            </span>
-
-          </div>
-
-          <h3>
-            Backend com Python
-          </h3>
-
-          <p>
-            Aprenda Flask, APIs REST, autenticação JWT,
-            PostgreSQL e deploy profissional.
-          </p>
-
-          <!-- STACK -->
-          <div class="stack-tags">
-
-            <span>Python</span>
-            <span>Flask</span>
-            <span>PostgreSQL</span>
-            <span>JWT</span>
-
-          </div>
-
-          <!-- PROGRESS -->
-          <div class="progress-wrapper">
-
-            <div class="progress-info">
-              <span>Progresso</span>
-              <span>35%</span>
-            </div>
-
-            <div class="custom-progress">
-              <div class="custom-progress-bar w-35"></div>
-            </div>
-
-          </div>
-
-          <!-- MODULES -->
-          <ul class="modules-list">
-
-            <li>✓ Introdução ao Python</li>
-            <li>✓ Criando APIs</li>
-            <li>✓ Banco de dados</li>
-            <li>○ Autenticação JWT</li>
-            <li>○ Deploy Linux</li>
-
-          </ul>
-
-          <!-- BUTTON -->
-          <a href="#" class="btn-trilha">
-            Continuar trilha →
-          </a>
-
-        </div>
-
-      </div>
-
-      <!-- CARD 2 -->
-      <div class="col-lg-4">
-
-        <div class="trilha-card">
-
-          <div class="trilha-top">
-
-            <div class="icon-box">
-              🐳
-            </div>
-
-            <span class="nivel intermediario">
-              Intermediário
-            </span>
-
-          </div>
-
-          <h3>
-            Docker na prática
-          </h3>
-
-          <p>
-            Domine containers, Docker Compose,
-            deploy e ambientes profissionais.
-          </p>
-
-          <div class="stack-tags">
-
-            <span>Docker</span>
-            <span>Compose</span>
-            <span>Nginx</span>
-            <span>Linux</span>
-
-          </div>
-
-          <div class="progress-wrapper">
-
-            <div class="progress-info">
-              <span>Progresso</span>
-              <span>10%</span>
-            </div>
-
-            <div class="custom-progress">
-              <div class="custom-progress-bar w-10"></div>
-            </div>
-
-          </div>
-
-          <ul class="modules-list">
-
-            <li>✓ O que é Docker</li>
-            <li>○ Dockerfile</li>
-            <li>○ Docker Compose</li>
-            <li>○ Containers reais</li>
-            <li>○ Deploy VPS</li>
-
-          </ul>
-
-          <a href="#" class="btn-trilha">
-            Explorar trilha →
-          </a>
-
-        </div>
-
-      </div>
-
-      <!-- CARD 3 -->
-      <div class="col-lg-4">
-
-        <div class="trilha-card">
-
-          <div class="trilha-top">
-
-            <div class="icon-box">
-              ⚛️
-            </div>
-
-            <span class="nivel avancado">
-              Avançado
-            </span>
-
-          </div>
-
-          <h3>
-            React Fullstack
-          </h3>
-
-          <p>
-            Crie aplicações modernas consumindo APIs,
-            autenticação e dashboards reais.
-          </p>
-
-          <div class="stack-tags">
-
-            <span>React</span>
-            <span>APIs</span>
-            <span>Hooks</span>
-            <span>Frontend</span>
-
-          </div>
-
-          <div class="progress-wrapper">
-
-            <div class="progress-info">
-              <span>Progresso</span>
-              <span>65%</span>
-            </div>
-
-            <div class="custom-progress">
-              <div class="custom-progress-bar w-65"></div>
-            </div>
-
-          </div>
-
-          <ul class="modules-list">
-
-            <li>✓ React Base</li>
-            <li>✓ Hooks</li>
-            <li>✓ Consumo API</li>
-            <li>✓ Dashboard</li>
-            <li>○ Deploy final</li>
-
-          </ul>
-
-          <a href="#" class="btn-trilha">
-            Ver projeto →
-          </a>
-
-        </div>
-
-      </div>
-
-    </div>
-
-  </div>
 
 </section>
+
 <style>
+
 /* =========================================
 TRILHAS SECTION
 ========================================= */
@@ -313,19 +174,14 @@ TRILHAS SECTION
     font-weight: 700;
 }
 
-.iniciante {
+.premium {
+    background: #ede9fe;
+    color: #5b21b6;
+}
+
+.free {
     background: #dcfce7;
     color: #166534;
-}
-
-.intermediario {
-    background: #fef3c7;
-    color: #92400e;
-}
-
-.avancado {
-    background: #fee2e2;
-    color: #991b1b;
 }
 
 /* TITLES */
@@ -393,18 +249,6 @@ TRILHAS SECTION
     border-radius: 999px;
 }
 
-.w-10 {
-    width: 10%;
-}
-
-.w-35 {
-    width: 35%;
-}
-
-.w-65 {
-    width: 65%;
-}
-
 /* MODULES */
 
 .modules-list {
@@ -442,5 +286,21 @@ TRILHAS SECTION
     opacity: .9;
     transform: scale(1.02);
 }
+
+/* RESPONSIVO */
+
+@media(max-width: 768px){
+
+    .section-title {
+        font-size: 36px;
+    }
+
+    .trilha-card {
+        padding: 24px;
+    }
+
+}
+
 </style>
+
 {% endblock %}

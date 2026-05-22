@@ -1,0 +1,606 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<!-- =========================================
+HERO DA TRILHA
+========================================= -->
+
+<section class="trilha-hero">
+
+    <div class="container">
+
+        <div class="hero-wrapper">
+
+            <div class="row align-items-center gy-5">
+
+                <!-- INFO -->
+                <div class="col-lg-7">
+
+                    {% if category.is_paid %}
+                        <span class="badge-trilha">
+                            🔒 Conteúdo Premium
+                        </span>
+                    {% else %}
+                        <span class="badge-trilha free">
+                            🚀 Conteúdo Gratuito
+                        </span>
+                    {% endif %}
+
+                    <h1 class="trilha-title">
+                        {{ category.name }}
+                    </h1>
+
+                    <p class="trilha-description">
+                        {{ category.description }}
+                    </p>
+
+                    <!-- STATS -->
+                    <div class="trilha-stats">
+
+                        <div class="stat-card">
+
+                            <div class="stat-icon">
+                                📚
+                            </div>
+
+                            <div>
+                                <strong>{{ posts|length }}</strong>
+                                <span>Aulas práticas</span>
+                            </div>
+
+                        </div>
+
+                        <div class="stat-card">
+
+                            <div class="stat-icon">
+                                ⚡
+                            </div>
+
+                            <div>
+
+                                <strong>
+
+                                    {% if category.is_paid %}
+                                        Premium
+                                    {% else %}
+                                        Free
+                                    {% endif %}
+
+                                </strong>
+
+                                <span>Nível de acesso</span>
+
+                            </div>
+
+                        </div>
+
+                        <div class="stat-card">
+
+                            <div class="stat-icon">
+                                🚀
+                            </div>
+
+                            <div>
+
+                                <strong>
+                                    Dev Flow
+                                </strong>
+
+                                <span>Aprendizado guiado</span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- SIDE CARD -->
+                <div class="col-lg-5">
+
+                    <div class="hero-card">
+
+                        <div class="hero-card-icon">
+
+                            {% if category.style == 'python' %}
+                                🐍
+                            {% elif category.style == 'docker' %}
+                                🐳
+                            {% elif category.style == 'react' %}
+                                ⚛️
+                            {% else %}
+                                🚀
+                            {% endif %}
+
+                        </div>
+
+                        <h3>
+                            Trilha organizada
+                        </h3>
+
+                        <p>
+                            Aprenda seguindo uma sequência lógica
+                            de conteúdos práticos focados em mercado.
+                        </p>
+
+                        <div class="hero-progress">
+
+                            <div class="hero-progress-info">
+                                <span>Trilha completa</span>
+                                <span>{{ posts|length }} módulos</span>
+                            </div>
+
+                            <div class="hero-progress-bar">
+                                <div class="hero-progress-fill"></div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- =========================================
+MODULOS
+========================================= -->
+
+<section class="modules-section">
+
+    <div class="container">
+
+        <div class="section-head">
+
+            <h2>
+                Conteúdo da trilha
+            </h2>
+
+            <p>
+                Siga os módulos em sequência para evoluir de forma prática.
+            </p>
+
+        </div>
+
+        <div class="modules-wrapper">
+
+            {% for post in posts %}
+
+                <div class="module-card">
+
+                    <!-- LEFT -->
+                    <div class="module-left">
+
+                        <div class="module-number">
+                            {{ "%02d"|format(loop.index) }}
+                        </div>
+
+                    </div>
+
+                    <!-- CENTER -->
+                    <div class="module-content">
+
+                        <div class="module-top">
+
+                            {% if post.is_paid %}
+                                <span class="module-badge premium">
+                                    🔒 Premium
+                                </span>
+                            {% else %}
+                                <span class="module-badge free">
+                                    Free
+                                </span>
+                            {% endif %}
+
+                            {% if post.is_detach %}
+                                <span class="module-badge destaque">
+                                    ⭐ Destaque
+                                </span>
+                            {% endif %}
+
+                        </div>
+
+                        <h3>
+                            {{ post.title }}
+                        </h3>
+
+                        <p>
+                            Continue evoluindo com conteúdo prático,
+                            direto ao ponto e aplicado ao mercado.
+                        </p>
+
+                    </div>
+
+                    <!-- RIGHT -->
+                    <div class="module-action">
+
+                        <a
+                            href="{{ url_for('site.post_detail', slug=post.slug) }}"
+                            class="btn-module">
+
+                            Estudar →
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+</section>
+
+<style>
+
+/* =========================================
+GERAL
+========================================= */
+
+body {
+    background: #f8fafc;
+}
+
+/* =========================================
+HERO
+========================================= */
+
+.trilha-hero {
+    padding: 80px 0 120px;
+    background:
+        radial-gradient(circle at top left, #312e81, transparent 35%),
+        radial-gradient(circle at bottom right, #2563eb, transparent 30%),
+        linear-gradient(
+            135deg,
+            #020617,
+            #0f172a
+        );
+    overflow: hidden;
+}
+
+.hero-wrapper {
+    position: relative;
+    z-index: 2;
+}
+
+.badge-trilha {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255,255,255,.08);
+    border: 1px solid rgba(255,255,255,.12);
+    color: #cbd5e1;
+    padding: 10px 18px;
+    border-radius: 999px;
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 24px;
+    backdrop-filter: blur(10px);
+}
+
+.badge-trilha.free {
+    background: rgba(34,197,94,.1);
+    border-color: rgba(34,197,94,.2);
+    color: #bbf7d0;
+}
+
+.trilha-title {
+    font-size: 64px;
+    line-height: 1.05;
+    font-weight: 900;
+    color: white;
+    margin-bottom: 24px;
+}
+
+.trilha-description {
+    color: #cbd5e1;
+    font-size: 19px;
+    line-height: 1.9;
+    max-width: 680px;
+}
+
+/* =========================================
+STATS
+========================================= */
+
+.trilha-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 18px;
+    margin-top: 45px;
+}
+
+.stat-card {
+    background: rgba(255,255,255,.06);
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: 24px;
+    padding: 22px;
+    min-width: 220px;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    backdrop-filter: blur(12px);
+}
+
+.stat-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 18px;
+    background: rgba(255,255,255,.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+}
+
+.stat-card strong {
+    display: block;
+    color: white;
+    font-size: 24px;
+    font-weight: 800;
+}
+
+.stat-card span {
+    color: #cbd5e1;
+    font-size: 14px;
+}
+
+/* =========================================
+SIDE CARD
+========================================= */
+
+.hero-card {
+    background: rgba(255,255,255,.06);
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: 32px;
+    padding: 40px;
+    text-align: center;
+    backdrop-filter: blur(14px);
+}
+
+.hero-card-icon {
+    font-size: 82px;
+    margin-bottom: 20px;
+}
+
+.hero-card h3 {
+    color: white;
+    font-size: 34px;
+    font-weight: 800;
+    margin-bottom: 16px;
+}
+
+.hero-card p {
+    color: #cbd5e1;
+    line-height: 1.8;
+    margin-bottom: 30px;
+}
+
+.hero-progress-info {
+    display: flex;
+    justify-content: space-between;
+    color: #cbd5e1;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.hero-progress-bar {
+    height: 12px;
+    background: rgba(255,255,255,.08);
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+.hero-progress-fill {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        #2563eb,
+        #8b5cf6
+    );
+}
+
+/* =========================================
+MODULES
+========================================= */
+
+.modules-section {
+    margin-top: -70px;
+    padding-bottom: 80px;
+}
+
+.section-head {
+    margin-bottom: 40px;
+}
+
+.section-head h2 {
+    font-size: 42px;
+    font-weight: 900;
+    color: #0f172a;
+    margin-bottom: 10px;
+}
+
+.section-head p {
+    color: #64748b;
+    font-size: 18px;
+}
+
+.modules-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.module-card {
+    background: white;
+    border-radius: 32px;
+    padding: 32px;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 10px 40px rgba(0,0,0,.05);
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    transition: .3s;
+}
+
+.module-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 60px rgba(0,0,0,.08);
+}
+
+.module-number {
+    width: 78px;
+    height: 78px;
+    border-radius: 24px;
+    background: linear-gradient(
+        135deg,
+        #2563eb,
+        #7c3aed
+    );
+    color: white;
+    font-size: 28px;
+    font-weight: 900;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.module-content {
+    flex: 1;
+}
+
+.module-top {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 18px;
+}
+
+.module-badge {
+    padding: 8px 14px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.module-badge.premium {
+    background: #ede9fe;
+    color: #6d28d9;
+}
+
+.module-badge.free {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.module-badge.destaque {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.module-content h3 {
+    font-size: 30px;
+    font-weight: 900;
+    color: #0f172a;
+    margin-bottom: 12px;
+}
+
+.module-content p {
+    color: #64748b;
+    line-height: 1.8;
+    margin: 0;
+}
+
+/* BUTTON */
+
+.btn-module {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px 28px;
+    border-radius: 18px;
+    text-decoration: none;
+    font-weight: 800;
+    color: white;
+    background: linear-gradient(
+        90deg,
+        #2563eb,
+        #4f46e5
+    );
+    transition: .3s;
+    white-space: nowrap;
+}
+
+.btn-module:hover {
+    transform: scale(1.03);
+    opacity: .95;
+}
+
+/* =========================================
+RESPONSIVO
+========================================= */
+
+@media(max-width: 992px){
+
+    .trilha-title {
+        font-size: 48px;
+    }
+
+    .module-card {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .module-action {
+        width: 100%;
+    }
+
+    .btn-module {
+        width: 100%;
+    }
+
+}
+
+@media(max-width: 768px){
+
+    .trilha-hero {
+        padding: 60px 0 100px;
+    }
+
+    .trilha-title {
+        font-size: 38px;
+    }
+
+    .hero-card {
+        padding: 30px;
+    }
+
+    .module-card {
+        padding: 24px;
+    }
+
+    .module-content h3 {
+        font-size: 24px;
+    }
+
+    .section-head h2 {
+        font-size: 34px;
+    }
+
+}
+
+</style>
+
+{% endblock %}
