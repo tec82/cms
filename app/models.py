@@ -28,6 +28,7 @@ class Category(db.Model):
 
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    #order = db.Column(db.Integer, default=0)
     title = db.Column(db.String(200))
     slug = db.Column(db.String(200), unique=True)
     content = db.Column(db.Text)

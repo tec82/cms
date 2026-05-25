@@ -88,14 +88,12 @@ def post_detail(slug):
 
 @site_bp.route('/trilhas')
 def trilhas():
-
-    categories = (
-        Category.query
-        .filter_by(is_paid=True)
-        .order_by(Category.name.asc())
-        .all()
-    )
-
+    
+    categories = db.session.query(
+        Category,
+        func.count(Post.id).label('total')
+    ).outerjoin(Post).filter(Category.is_paid).group_by(Category.id).all()
+    
     return render_template(
         'site/trilhas.html',
         categories=categories

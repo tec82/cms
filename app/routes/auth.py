@@ -20,7 +20,7 @@ def logout():
     logout_user()
     return redirect(url_for('auth.login'))
 
-@auth_bp.route('/profile', methods=['GET','POST'])
+#@auth_bp.route('/profile', methods=['GET','POST'])
 def profile():    
     if request.method == 'POST':        
         current_password = request.form.get('current_password')
