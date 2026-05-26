@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+
+{% block title %}Histórico de Leitura{% endblock %}
+
+{% block content %}
+
+<section class="py-5">
+    <div class="container">
+
+        <!-- HEADER -->
+        <div class="mb-5">
+            <span class="badge-dev">
+                📚 Seu Histórico
+            </span>
+
+            <h1 class="section-title mb-3">
+                Histórico de leitura
+            </h1>
+
+            <p class="section-subtitle m-0">
+                Continue acompanhando os conteúdos que você já visualizou no blog.
+            </p>
+        </div>
+
+        {% if history %}
+
+        <!-- LISTA -->
+        <div class="row g-4">
+
+            {% for view, post in history %}
+
+            <div class="col-lg-6">
+
+                <div class="post-card h-100 d-flex flex-column">
+
+                    <!-- Categoria -->
+                    {% if post.category %}
+                    <div class="mb-3">
+                        <span class="tag" style="{{ post.category.style }}">
+                            {{ post.category.name }}
+                        </span>
+                    </div>
+                    {% endif %}
+
+                    <!-- Título -->
+                    <h3 class="mb-3">
+                        {{ post.title }}
+                    </h3>
+
+                    <!-- Resumo -->
+                    <p class="flex-grow-1">                        
+                        {{ post.content | striptags | truncate(120) }}
+                    </p>
+
+                    <!-- Meta -->
+                    <div class="meta mb-4">
+                        <i class="bi bi-clock-history"></i>
+                        Visualizado em
+                        {{ view.viewed_at.strftime('%d/%m/%Y às %H:%M') }}
+                    </div>
+
+                    <!-- Botão -->
+                    <a
+                        href="{{ url_for('site.post_detail', slug=post.slug) }}"
+                        class="btn-trilha"
+                    >
+                        Continuar leitura →
+                    </a>
+
+                </div>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+        {% else %}
+
+        <!-- EMPTY STATE -->
+        <div class="empty-history">
+
+            <div class="empty-icon">
+                📖
+            </div>
+
+            <h2 class="mb-3">
+                Nenhuma leitura ainda
+            </h2>
+
+            <p class="mb-4">
+                Você ainda não visualizou nenhum artigo do blog.
+            </p>
+
+            <a
+                href="{{ url_for('blog.index') }}"
+                class="btn-module"
+            >
+                Explorar conteúdos
+            </a>
+
+        </div>
+
+        {% endif %}
+
+    </div>
+</section>
+
+{% endblock %}

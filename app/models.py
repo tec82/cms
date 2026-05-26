@@ -96,3 +96,35 @@ class PostView(db.Model):
             cascade='all, delete-orphan'
         )
     )
+
+    from datetime import datetime
+
+class TrailProgress(db.Model):
+
+    __tablename__ = 'trail_progress'
+
+    id = db.Column(db.Integer, primary_key=True)
+
+    user_id = db.Column(
+        db.Integer,
+        db.ForeignKey('user.id'),
+        nullable=False
+    )
+
+    category_id = db.Column(
+        db.Integer,
+        db.ForeignKey('category.id'),
+        nullable=False
+    )
+
+    last_post_id = db.Column(
+        db.Integer,
+        db.ForeignKey('post.id'),
+        nullable=False
+    )
+
+    updated_at = db.Column(
+        db.DateTime,
+        default=datetime.utcnow,
+        onupdate=datetime.utcnow
+    )

@@ -34,7 +34,7 @@
         <div class="row g-4 mb-5">
 
             <!-- TOTAL -->
-            <div class="col-md-4">
+            <div class="col-md-6">
 
                 <div class="card border-0 shadow-sm h-100">
 
@@ -55,7 +55,7 @@
             </div>
 
             <!-- APROVADOS -->
-            <div class="col-md-4">
+            <div class="col-md-6">
 
                 <div class="card border-0 shadow-sm h-100">
 
@@ -81,36 +81,6 @@
                 </div>
 
             </div>
-
-            <!-- VALOR -->
-            <div class="col-md-4">
-
-                <div class="card border-0 shadow-sm h-100">
-
-                    <div class="card-body p-4">
-
-                        <small class="text-muted d-block mb-2">
-                            Total Investido
-                        </small>
-
-                        <h3 class="fw-bold mb-0">
-
-                            R$
-                            {{
-                                '%.2f'|format(
-                                    payments
-                                    | sum(attribute='amount')
-                                )
-                            }}
-
-                        </h3>
-
-                    </div>
-
-                </div>
-
-            </div>
-
         </div>
 
         <!-- TABELA -->
@@ -125,8 +95,7 @@
                         <tr>
                             <th>ID</th>
                             <th>Valor</th>
-                            <th>Status</th>
-                            <th>Gateway</th>
+                            <th>Status</th>                            
                             <th>Data</th>
                         </tr>
 
@@ -182,39 +151,7 @@
 
                                     {% endif %}
 
-                                </td>
-
-                                <!-- PROVIDER -->
-                                <td>
-
-                                    {% if payment.provider == 'stripe' %}
-
-                                        <span class="badge bg-dark">
-                                            Stripe
-                                        </span>
-
-                                    {% elif payment.provider == 'mercado_pago' %}
-
-                                        <span
-                                            class="badge"
-                                            style="
-                                                background: #009ee3;
-                                            "
-                                        >
-                                            Mercado Pago
-                                        </span>
-
-                                    {% else %}
-
-                                        <span class="badge bg-secondary">
-
-                                            {{ payment.provider }}
-
-                                        </span>
-
-                                    {% endif %}
-
-                                </td>
+                                </td>                                
 
                                 <!-- DATA -->
                                 <td>
@@ -265,7 +202,7 @@
                 </p>
 
                 <a
-                    href="{{ url_for('dashboard.premium_posts') }}"
+                    href=""
                     class="btn btn-primary px-4"
                 >
                     Explorar Conteúdo Premium

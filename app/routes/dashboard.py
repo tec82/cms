@@ -1,3 +1,5 @@
+from datetime import datetime, timezone
+
 from flask import Blueprint, render_template, redirect, url_for, flash
 from flask_login import login_required, current_user
 
@@ -152,6 +154,15 @@ def history():
 @login_required
 def payments():
 
+    payment = Payment(
+        user_id=current_user.id,
+        amount=29.90,
+        status='paid',
+        provider='stripe'        
+    )
+
+    db.session.add(payment)
+
     payments = Payment.query.filter_by(
         user_id=current_user.id
     ).order_by(
@@ -159,7 +170,7 @@ def payments():
     ).all()
 
     return render_template(
-        'dashboard/payments.html',
+        'dashboard/purchases.html',
         payments=payments
     )
 
