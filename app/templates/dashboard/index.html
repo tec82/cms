@@ -183,43 +183,41 @@
 
                     {% if recent_views %}
 
-                        <div class="list-group list-group-flush">
+                    <div class="list-group list-group-flush">
 
-                            {% for view, post in recent_views %}
+                        {% for view, post in recent_views %}
 
-                                <a
-                                    href="{{ url_for('site.post_detail', slug=post.slug) }}"
-                                    class="list-group-item list-group-item-action border-0 px-0"
-                                >
+                        <a href="{{ url_for('site.post_detail', slug=post.slug) }}"
+                            class="list-group-item list-group-item-action border-0 px-0">
 
-                                    <div class="d-flex justify-content-between align-items-start">
+                            <div class="d-flex justify-content-between align-items-start">
 
-                                        <div>
+                                <div>
 
-                                            <h6 class="mb-1 fw-semibold">
-                                                {{ post.title }}
-                                            </h6>
+                                    <h6 class="mb-1 fw-semibold">
+                                        {{ post.title }}
+                                    </h6>
 
-                                            <small class="text-muted">
-                                                Visualizado em
-                                                {{ view.viewed_at.strftime('%d/%m/%Y às %H:%M') }}
-                                            </small>
+                                    <small class="text-muted">
+                                        Visualizado em
+                                        {{ view.viewed_at.strftime('%d/%m/%Y às %H:%M') }}
+                                    </small>
 
-                                        </div>
+                                </div>
 
-                                    </div>
+                            </div>
 
-                                </a>
+                        </a>
 
-                            {% endfor %}
+                        {% endfor %}
 
-                        </div>
+                    </div>
 
                     {% else %}
 
-                        <p class="text-muted mb-0">
-                            Nenhum acesso recente.
-                        </p>
+                    <p class="text-muted mb-0">
+                        Nenhum acesso recente.
+                    </p>
 
                     {% endif %}
 
@@ -246,43 +244,43 @@
 
                     {% if recent_payments %}
 
-                        <div class="list-group list-group-flush">
+                    <div class="list-group list-group-flush">
 
-                            {% for payment in recent_payments %}
+                        {% for payment in recent_payments %}
 
-                                <div class="list-group-item border-0 px-0">
+                        <div class="list-group-item border-0 px-0">
 
-                                    <div class="d-flex justify-content-between align-items-center">
+                            <div class="d-flex justify-content-between align-items-center">
 
-                                        <div>
+                                <div>
 
-                                            <h6 class="mb-1 fw-semibold">
-                                                {{ payment.plan_name or 'Assinatura Premium' }}
-                                            </h6>
+                                    <h6 class="mb-1 fw-semibold">
+                                        {{ payment.plan_name or 'Assinatura Premium' }}
+                                    </h6>
 
-                                            <small class="text-muted">
-                                                {{ payment.created_at.strftime('%d/%m/%Y às %H:%M') }}
-                                            </small>
-
-                                        </div>
-
-                                        <span class="badge bg-success">
-                                            Pago
-                                        </span>
-
-                                    </div>
+                                    <small class="text-muted">
+                                        {{ payment.created_at.strftime('%d/%m/%Y às %H:%M') }}
+                                    </small>
 
                                 </div>
 
-                            {% endfor %}
+                                <span class="badge bg-success">
+                                    Pago
+                                </span>
+
+                            </div>
 
                         </div>
 
+                        {% endfor %}
+
+                    </div>
+
                     {% else %}
 
-                        <p class="text-muted mb-0">
-                            Nenhum pagamento encontrado.
-                        </p>
+                    <p class="text-muted mb-0">
+                        Nenhum pagamento encontrado.
+                    </p>
 
                     {% endif %}
 
@@ -299,24 +297,18 @@
 
         <div class="list-group list-group-flush">
 
-            <a
-                href="{{ url_for('dashboard.favorites') }}"
-                class="list-group-item list-group-item-action"
-            >
+            <a href="{{ url_for('site.trilhas') }}" class="list-group-item list-group-item-action">
+                🧭 Minhas Trilhas
+            </a>
+            <a href="{{ url_for('dashboard.favorites') }}" class="list-group-item list-group-item-action">
                 ⭐ Meus Favoritos
             </a>
 
-            <a
-                href="{{ url_for('dashboard.history') }}"
-                class="list-group-item list-group-item-action"
-            >
+            <a href="{{ url_for('dashboard.history') }}" class="list-group-item list-group-item-action">
                 👁️ Histórico de Leituras
             </a>
 
-            <a
-                href="{{ url_for('dashboard.payments') }}"
-                class="list-group-item list-group-item-action"
-            >
+            <a href="{{ url_for('dashboard.payments') }}" class="list-group-item list-group-item-action">
                 💳 Meus Pagamentos
             </a>
         </div>

@@ -1,3 +1,4 @@
+from flask import abort
 from datetime import datetime, timezone
 
 from flask import Blueprint, render_template, redirect, url_for, flash
@@ -85,7 +86,7 @@ def add_favorite(post_id):
 
     favorite = Favorite(
         user_id=current_user.id,
-         post_id=post.id
+        post_id=post.id
     )
 
     db.session.add(favorite)

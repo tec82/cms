@@ -13,28 +13,60 @@
 
     <!-- GRID -->
     <div class="row g-4">
-      {% for category, total in categories %}
+      {% for item in trilhas %}
+        {% set category = item.category %}
+        {% set total = item.total %}
+        {% set started = item.started %}
+        {% set progress_pct = item.progress_pct %}
+        {% set last_post = item.last_post %}
         <div class="col-lg-4 col-md-6">
           <div class="trilha-card">          
             <div class="trilha-top">
               <div class="icon-box">🚀</div>
-              <span class="nivel premium">Premium</span>
+              <span class="nivel premium {% if started %}{% if progress_pct == 100 %}bg-success{% else %}bg-primary{% endif %}{% endif %}" style="font-size: 0.75rem; padding: 4px 10px; border-radius: 20px; font-weight: bold; color: white;">
+                {% if started %}
+                  {% if progress_pct == 100 %}
+                    Concluída ✅
+                  {% else %}
+                    Progresso: {{ progress_pct }}%
+                  {% endif %}
+                {% else %}
+                  Premium
+                {% endif %}
+              </span>
             </div>            
             <h3>{{ category.name }}</h3>
             <p>{{ category.description }}</p>            
-            {% set posts = category.posts %}                                   
-              <div class="progress-wrapper">
-                <div class="progress-info">
-                  <span>Conteúdo disponível</span>
-                  <span>{{ total }} aulas</span>
-                </div>
-                <div class="custom-progress">
-                  <div class="custom-progress-bar" style="width: 100%"></div>
-                </div>
+            
+            <div class="progress-wrapper">
+              <div class="progress-info d-flex justify-content-between mb-1" style="font-size: 0.85rem; font-weight: 500;">
+                <span>
+                  {% if started %}
+                    {{ progress_pct }}% concluído
+                  {% else %}
+                    Disponível
+                  {% endif %}
+                </span>
+                <span>{{ total }} aulas</span>
               </div>
-              <a href="{{ url_for('site.datail_trilhas', slug=category.slug) }}" class="btn-trilha">
+              <div class="custom-progress" style="background: rgba(0,0,0,0.06); height: 8px; border-radius: 4px; overflow: hidden; width: 100%;">
+                <div class="custom-progress-bar" style="width: {{ progress_pct if started else 0 }}%; background: var(--bs-primary, #0d6efd); height: 100%; transition: width 0.4s ease;"></div>
+              </div>
+              {% if started and last_post %}
+                <div class="last-accessed-info mt-2 d-flex align-items-center gap-1 text-muted" style="font-size: 0.82rem;">
+                  <i class="bi bi-bookmark-fill text-warning"></i>
+                  <span>Parou em: <strong class="text-secondary">{{ last_post.title }}</strong></span>
+                </div>
+              {% endif %}
+            </div>
+            
+            <a href="{{ url_for('site.datail_trilhas', slug=category.slug) }}" class="btn-trilha mt-3" style="display: block; text-align: center; padding: 10px; border-radius: 8px; font-weight: 600; text-decoration: none; transition: all 0.2s;">
+              {% if started %}
+                Continuar trilha →
+              {% else %}
                 Explorar trilha →
-              </a>
+              {% endif %}
+            </a>
           </div>
         </div>
       {% endfor %}

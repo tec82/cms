@@ -97,10 +97,7 @@ class PostView(db.Model):
         )
     )
 
-    from datetime import datetime
-
 class TrailProgress(db.Model):
-
     __tablename__ = 'trail_progress'
 
     id = db.Column(db.Integer, primary_key=True)
@@ -125,6 +122,36 @@ class TrailProgress(db.Model):
 
     updated_at = db.Column(
         db.DateTime,
-        default=datetime.utcnow,
-        onupdate=datetime.utcnow
+        default=lambda: datetime.now(timezone.utc),
+        onupdate=lambda: datetime.now(timezone.utc)
     )
+
+    # Impede múltiplos registros para o mesmo usuário na mesma trilha
+    __table_args__ = (
+        db.UniqueConstraint(
+            'user_id',
+            'category_id',
+            name='unique_user_category_progress'
+        ),
+    )
+
+    # Relacionamentos
+    user = db.relationship(
+        'User',
+        backref=db.backref(
+            'trail_progresses',
+            lazy=True,
+            cascade='all, delete-orphan'
+        )
+    )
+
+    category = db.relationship(
+        'Category',
+        backref=db.backref(
+            'trail_progresses',
+            lazy=True,
+            cascade='all, delete-orphan'
+        )
+    )
+
+    last_post = db.relationship('Post')
