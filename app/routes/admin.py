@@ -1,7 +1,8 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from flask_login import login_required,current_user
-from models import db, Post, Category
+from models import db, Post, Category, User,Payment
 from slugify import slugify
+from werkzeug.security import generate_password_hash
 
 
 import cloudinary.uploader
@@ -201,3 +202,95 @@ def delete_category(id):
     db.session.commit()
 
     return redirect(url_for('admin.categories'))
+
+
+@admin_bp.route('/users')
+def users():
+    users = User.query.order_by(User.id.desc()).all()    
+    return render_template('admin/users/index.html', users=users)
+
+@admin_bp.route('/users/update/<int:id>', methods=['GET', 'POST'])
+def update_user(id):
+    user = User.query.get_or_404(id)
+    if request.method == 'POST':
+        username = request.form.get('username') or request.form.get('name')
+        email = request.form.get('email')
+        password = request.form.get('password')
+        provider = request.form.get('provider')
+        google_id = request.form.get('google_id')
+        github_id = request.form.get('github_id')
+        
+        # Se for o próprio usuário, não permite remover privilégio de admin
+        if user.id == current_user.id:
+            is_super_user = True
+        else:
+            is_super_user = True if request.form.get('is_super_user') else False
+
+        if not username or not email:
+            flash('Nome de usuário e E-mail são obrigatórios.', 'danger')
+            return redirect(url_for('admin.update_user', id=user.id))
+
+        # Verificar duplicados excluindo o próprio
+        existing_email = User.query.filter_by(email=email).first()
+        if existing_email and existing_email.id != user.id:
+            flash('Este e-mail já está em uso por outro usuário.', 'danger')
+            return redirect(url_for('admin.update_user', id=user.id))
+
+        existing_username = User.query.filter_by(username=username).first()
+        if existing_username and existing_username.id != user.id:
+            flash('Este nome de usuário já está em uso por outro usuário.', 'danger')
+            return redirect(url_for('admin.update_user', id=user.id))
+
+        user.username = username
+        user.email = email
+        user.is_super_user = is_super_user
+        
+        if provider:
+            user.provider = provider
+        if google_id:
+            user.google_id = google_id
+        if github_id:
+            user.github_id = github_id
+
+        if password:
+            user.password = generate_password_hash(password)
+
+        avatar_file = request.files.get('avatar')
+        if avatar_file:
+            try:
+                result = cloudinary.uploader.upload(
+                    avatar_file,
+                    folder="avatars",
+                    width=200,
+                    height=200,
+                    crop="thumb",
+                    gravity="face",
+                    overwrite=True
+                )
+                user.avatar = result['secure_url']
+            except Exception as e:
+                flash('Houve erro no upload do novo avatar.', 'warning')
+        else:
+            form_avatar = request.form.get('avatar')
+            if form_avatar:
+                user.avatar = form_avatar
+
+        db.session.commit()
+        flash('Usuário atualizado com sucesso!', 'success')
+        return redirect(url_for('admin.users'))
+
+    return render_template('admin/users/update.html', user=user)
+
+
+@admin_bp.route('/users/delete/<int:id>', methods=['GET', 'POST'])
+def delete_user(id):
+    if id == current_user.id:
+        flash('Você não pode excluir a si mesmo!', 'danger')
+        return redirect(url_for('admin.users'))
+
+    user = User.query.get_or_404(id)
+    db.session.delete(user)
+    db.session.commit()
+    flash('Usuário excluído com sucesso!', 'success')
+    return redirect(url_for('admin.users'))
+    

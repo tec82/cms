@@ -1,3 +1,4 @@
+from flask import request
 from flask import abort
 from datetime import datetime, timezone
 
@@ -155,15 +156,15 @@ def history():
 @login_required
 def payments():
 
-    payment = Payment(
-        user_id=current_user.id,
-        amount=29.90,
-        status='paid',
-        provider='stripe'        
-    )
+    id = request.args.get('id')    
 
-    db.session.add(payment)
-
+    if id and current_user.is_super_user:
+        payments = Payment.query.filter_by(user_id=id).order_by(Payment.id.desc()).all()
+        return render_template(
+            'dashboard/purchases.html',
+            payments=payments
+        )
+        
     payments = Payment.query.filter_by(
         user_id=current_user.id
     ).order_by(

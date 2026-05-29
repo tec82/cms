@@ -15,6 +15,8 @@ class User(db.Model, UserMixin):
     github_id = db.Column(db.String(200))
 
     is_super_user = db.Column(db.Boolean, default=False)
+    is_active = db.Column(db.Boolean, default=True)
+    
 
 class Category(db.Model):
     id = db.Column(db.Integer, primary_key=True)
