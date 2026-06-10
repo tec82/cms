@@ -1,7 +1,8 @@
-from flask import Blueprint, render_template, request, abort
-from flask_login import current_user
-from models import PostView, Favorite, Post, Category, TrailProgress, db
+from flask import Blueprint, render_template, request, abort, redirect, url_for, flash
+from flask_login import current_user, login_required
+from models import PostView, Favorite, Post, Category, TrailProgress, db, Payment
 from sqlalchemy import func
+from datetime import datetime, timezone
 import json
 
 site_bp = Blueprint('site', __name__)
@@ -58,13 +59,18 @@ def posts():
 @site_bp.route('/artigo/<slug>')
 def post_detail(slug):
     post = Post.query.filter_by(slug=slug).first()
-    # conteúdo pago (se quiser usar depois)
-    if post.is_paid and not current_user.is_authenticated:
-         return "Conteúdo pago 🔒"   
-
-    # evita erro de None
     if not post:
         abort(404)
+
+    # conteúdo pago (se quiser usar depois)
+    if post.is_paid:
+        if not current_user.is_authenticated:
+            flash('Por favor, faça login para acessar este conteúdo premium.', 'info')
+            return redirect(url_for('auth.login', next=request.url))
+
+        has_paid = Payment.query.filter_by(user_id=current_user.id, status='paid').first() is not None
+        if not has_paid and not current_user.is_super_user:
+            return redirect(url_for('site.checkout', post_id=post.id))
 
     favorite = None
 
@@ -172,13 +178,21 @@ def datail_trilhas(slug):
         is_paid=True
     ).first_or_404()
 
+    if not current_user.is_authenticated:
+        flash('Por favor, faça login para acessar esta trilha premium.', 'info')
+        return redirect(url_for('auth.login', next=request.url))
+
+    has_paid = Payment.query.filter_by(user_id=current_user.id, status='paid').first() is not None
+    if not has_paid and not current_user.is_super_user:
+        return redirect(url_for('site.checkout', category_id=category.id))
+
     posts = (
         Post.query
         .filter_by(
             category_id=category.id,
             is_draft=False
         )
-        .order_by(Post.created_at.asc())
+        .order_by(Post.order.asc(), Post.created_at.asc())
         .all()
     )
 
@@ -237,3 +251,53 @@ def datail_trilhas(slug):
         progress_pct=progress_pct,
         next_post=next_post
     )
+
+@site_bp.route('/checkout')
+@login_required
+def checkout():
+    post_id = request.args.get('post_id')
+    category_id = request.args.get('category_id')
+
+    post = None
+    category = None
+
+    if post_id:
+        post = Post.query.get(post_id)
+    if category_id:
+        category = Category.query.get(category_id)
+
+    return render_template('site/checkout.html', post=post, category=category)
+
+@site_bp.route('/checkout/process', methods=['POST'])
+@login_required
+def process_checkout():
+    post_id = request.form.get('post_id')
+    category_id = request.form.get('category_id')
+    amount = float(request.form.get('amount', 29.90))
+    provider = request.form.get('provider', 'stripe')
+
+    # precisa criar um servico para criar pagamento, pix, cartão, boleto e verificar se ele pagou o mes.
+    payment = Payment(
+        user_id=current_user.id,
+        amount=amount,
+        status='paid',
+        provider=provider,
+        created_at=datetime.now(timezone.utc)
+    )
+
+    db.session.add(payment)
+    db.session.commit()
+
+    flash('Pagamento simulado com sucesso! Bem-vindo ao Premium 🚀', 'success')
+
+    if post_id:
+        post = Post.query.get(post_id)
+        if post:
+            return redirect(url_for('site.post_detail', slug=post.slug))
+
+    if category_id:
+        category = Category.query.get(category_id)
+        if category:
+            return redirect(url_for('site.datail_trilhas', slug=category.slug))
+
+    return redirect(url_for('dashboard.index'))

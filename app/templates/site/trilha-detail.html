@@ -16,19 +16,22 @@
                         {{ category.description }}
                     </p>
                     {% if current_user.is_authenticated and not current_user.is_super_user %}
-                        <div class="mt-4 mb-4">
-                            {% if progress_pct > 0 %}
-                                <a href="{{ url_for('site.post_detail', slug=next_post.slug) }}" class="btn btn-warning btn-lg rounded-pill px-4 fw-bold shadow-sm text-dark d-inline-flex align-items-center gap-2">
-                                    <i class="bi bi-play-circle-fill fs-5"></i> Continuar Trilha ({{ progress_pct }}%)
-                                </a>
-                            {% else %}
-                                {% if next_post %}
-                                    <a href="{{ url_for('site.post_detail', slug=next_post.slug) }}" class="btn btn-primary btn-lg rounded-pill px-4 fw-bold shadow-sm d-inline-flex align-items-center gap-2" style="background: linear-gradient(90deg, #2563eb, #7c3aed); border: none;">
-                                        <i class="bi bi-play-circle-fill fs-5"></i> Iniciar Trilha
-                                    </a>
-                                {% endif %}
-                            {% endif %}
-                        </div>
+                    <div class="mt-4 mb-4">
+                        {% if progress_pct > 0 %}
+                        <a href="{{ url_for('site.post_detail', slug=next_post.slug) }}"
+                            class="btn btn-warning btn-lg rounded-pill px-4 fw-bold shadow-sm text-dark d-inline-flex align-items-center gap-2">
+                            <i class="bi bi-play-circle-fill fs-5"></i> Continuar Trilha ({{ progress_pct }}%)
+                        </a>
+                        {% else %}
+                        {% if next_post %}
+                        <a href="{{ url_for('site.post_detail', slug=next_post.slug) }}"
+                            class="btn btn-primary btn-lg rounded-pill px-4 fw-bold shadow-sm d-inline-flex align-items-center gap-2"
+                            style="background: linear-gradient(90deg, #2563eb, #7c3aed); border: none;">
+                            <i class="bi bi-play-circle-fill fs-5"></i> Iniciar Trilha
+                        </a>
+                        {% endif %}
+                        {% endif %}
+                    </div>
                     {% endif %}
                     <div class="trilha-stats">
                         <div class="stat-card">
@@ -76,43 +79,47 @@
 
         <div class="modules-wrapper">
             {% for post in posts %}
-                {% set viewed = post.id in viewed_post_ids %}
-                {% set stopped = post.id == last_post_id %}
-                <div class="module-card {% if stopped %}border border-warning shadow-sm{% endif %}" style="{% if stopped %}border-color: #ffc107 !important; background-color: #fffbeb !important; transition: all 0.3s ease;{% endif %}">
-                    <div class="module-left">
-                        <div class="module-number" style="{% if viewed %}background: linear-gradient(135deg, #10b981, #059669);{% endif %} transition: background 0.3s ease;">
-                            {% if viewed %}
-                                <i class="bi bi-check-lg" style="font-size: 1.8rem; color: white;"></i>
-                            {% else %}
-                                {{ "%02d"|format(loop.index) }}
-                            {% endif %}
-                        </div>
-                    </div>
-                    <div class="module-content">
-                        <div class="module-top">
-                            <span class="module-badge premium">Premium</span>
-                            {% if viewed %}
-                                <span class="badge bg-success border border-success-subtle rounded-pill" style="font-size: 0.72rem; padding: 6px 12px; font-weight: bold; color: white; display: inline-flex; align-items: center; gap: 4px;">
-                                    <i class="bi bi-check-circle-fill"></i> Concluída
-                                </span>
-                            {% endif %}
-                            {% if stopped %}
-                                <span class="badge bg-warning text-dark border border-warning-subtle rounded-pill" style="font-size: 0.72rem; padding: 6px 12px; font-weight: bold; display: inline-flex; align-items: center; gap: 4px;">
-                                    <i class="bi bi-pin-angle-fill"></i> Parou Aqui
-                                </span>
-                            {% endif %}
-                        </div>
-                        <h3>{{ post.title }}</h3>
-                    </div>
-
-                    <div class="module-action">
-                        <a
-                            href="{{ url_for('site.post_detail', slug=post.slug) }}"
-                            class="btn-module {% if viewed %}btn-outline-success{% endif %}" style="{% if viewed %}background: transparent; border: 2px solid #10b981; color: #10b981;{% endif %}">
-                            {% if viewed %}Rever{% else %}Abrir{% endif %}
-                        </a>
+            {% set viewed = post.id in viewed_post_ids %}
+            {% set stopped = post.id == last_post_id %}
+            <div class="module-card {% if stopped %}border border-warning shadow-sm{% endif %}"
+                style="{% if stopped %}border-color: #ffc107 !important; background-color: #fffbeb !important; transition: all 0.3s ease;{% endif %}">
+                <div class="module-left">
+                    <div class="module-number"
+                        style="{% if viewed %}background: linear-gradient(135deg, #10b981, #059669);{% endif %} transition: background 0.3s ease;">
+                        {% if viewed %}
+                        <i class="bi bi-check-lg" style="font-size: 1.8rem; color: white;"></i>
+                        {% else %}
+                        {{ post.order }}
+                        {% endif %}
                     </div>
                 </div>
+                <div class="module-content">
+                    <div class="module-top">
+                        <span class="module-badge premium">Premium</span>
+                        {% if viewed %}
+                        <span class="badge bg-success border border-success-subtle rounded-pill"
+                            style="font-size: 0.72rem; padding: 6px 12px; font-weight: bold; color: white; display: inline-flex; align-items: center; gap: 4px;">
+                            <i class="bi bi-check-circle-fill"></i> Concluída
+                        </span>
+                        {% endif %}
+                        {% if stopped %}
+                        <span class="badge bg-warning text-dark border border-warning-subtle rounded-pill"
+                            style="font-size: 0.72rem; padding: 6px 12px; font-weight: bold; display: inline-flex; align-items: center; gap: 4px;">
+                            <i class="bi bi-pin-angle-fill"></i> Parou Aqui
+                        </span>
+                        {% endif %}
+                    </div>
+                    <h3>{{ post.title }}</h3>
+                </div>
+
+                <div class="module-action">
+                    <a href="{{ url_for('site.post_detail', slug=post.slug) }}"
+                        class="btn-module {% if viewed %}btn-outline-success{% endif %}"
+                        style="{% if viewed %}background: transparent; border: 2px solid #10b981; color: #10b981;{% endif %}">
+                        {% if viewed %}Rever{% else %}Abrir{% endif %}
+                    </a>
+                </div>
+            </div>
             {% endfor %}
         </div>
     </div>

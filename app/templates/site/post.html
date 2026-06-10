@@ -13,10 +13,7 @@
 
       <div class="post-hero shadow-sm mb-4">
 
-        <img
-          src="{{ post.image_url }}"
-          alt="{{ post.title }}"
-        >
+        <img src="{{ post.image_url }}" alt="{{ post.title }}">
 
       </div>
 
@@ -60,25 +57,21 @@
             <!-- FAVORITE -->
             {% if current_user.is_authenticated and not current_user.is_super_user %}
 
-              {% if favorite %}
+            {% if favorite %}
 
-              <a
-                href="{{ url_for('dashboard.remove_favorite', id=favorite.id) }}"
-                class="btn btn-danger rounded-pill px-4"
-              >
-                💔 Remover Favorito
-              </a>
+            <a href="{{ url_for('dashboard.remove_favorite', id=favorite.id) }}"
+              class="btn btn-danger rounded-pill px-4">
+              💔 Remover Favorito
+            </a>
 
-              {% else %}
+            {% else %}
 
-              <a
-                href="{{ url_for('dashboard.add_favorite', post_id=post.id) }}"
-                class="btn btn-outline-danger rounded-pill px-4"
-              >
-                ❤️ Favoritar
-              </a>
+            <a href="{{ url_for('dashboard.add_favorite', post_id=post.id) }}"
+              class="btn btn-outline-danger rounded-pill px-4">
+              ❤️ Favoritar
+            </a>
 
-              {% endif %}
+            {% endif %}
 
             {% endif %}
 
@@ -94,9 +87,7 @@
             </h1>
 
             <!-- META -->
-            <div
-              class="d-flex flex-wrap align-items-center gap-4 text-muted small"
-            >
+            <div class="d-flex flex-wrap align-items-center gap-4 text-muted small">
 
               <div class="d-flex align-items-center gap-2">
 
@@ -104,16 +95,6 @@
 
                 <span>
                   {{ post.created_at.strftime('%d/%m/%Y') }}
-                </span>
-
-              </div>
-
-              <div class="d-flex align-items-center gap-2">
-
-                <span>⏱️</span>
-
-                <span>
-                  Leitura rápida
                 </span>
 
               </div>
@@ -136,19 +117,13 @@
       <!-- NAVIGATION -->
       <div class="d-flex justify-content-between mt-4">
 
-        <a
-          href="{{ url_for('site.posts') }}"
-          class="btn btn-light border rounded-pill px-4"
-        >
+        <a href="{{ url_for('site.posts') }}" class="btn btn-light border rounded-pill px-4">
           ← Voltar
         </a>
 
         {% if current_user.is_authenticated %}
 
-        <a
-          href="{{ url_for('dashboard.index') }}"
-          class="btn btn-dark rounded-pill px-4"
-        >
+        <a href="{{ url_for('dashboard.index') }}" class="btn btn-dark rounded-pill px-4">
           Dashboard
         </a>
 

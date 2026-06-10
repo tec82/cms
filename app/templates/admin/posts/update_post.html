@@ -6,209 +6,373 @@
 
   <div class="row justify-content-center">
 
-    <div class="col-lg-9">
+    <div class="col-xl-9 col-lg-10">
 
       <!-- HEADER -->
-      <div class="d-flex justify-content-between align-items-center mb-4">
+      <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4 gap-3">
 
         <div>
-          <h2 class="fw-bold mb-0">Editar Post</h2>
-          <p class="text-muted">
+          <span class="badge bg-dark-subtle text-dark mb-2 px-3 py-2">
+            Painel Administrativo
+          </span>
+
+          <h1 class="fw-bold mb-1 display-6">
+            Editar Post
+          </h1>
+
+          <p class="text-muted mb-0">
             Atualize as informações do seu artigo
           </p>
         </div>
 
         <a
           href="{{ url_for('admin.dashboard') }}"
-          class="btn btn-outline-secondary btn-sm"
+          class="btn btn-outline-secondary"
         >
-          Cancelar
+          <i class="bi bi-arrow-left me-2"></i>
+          Voltar
         </a>
 
       </div>
 
       <!-- FORM -->
-      <form
-        method="POST"
-        enctype="multipart/form-data"
-      >
+      <form method="POST" enctype="multipart/form-data">
 
-        <div class="featured-card p-4 p-md-5 border rounded bg-white shadow-sm">
+        <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
 
-          <!-- TÍTULO -->
-          <div class="mb-4">
+          <!-- TOP BAR -->
+          <div class="bg-light border-bottom px-4 py-3">
 
-            <label
-              class="form-label fw-bold small text-uppercase text-muted"
-            >
-              Título do Artigo
-            </label>
+            <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
 
-            <input
-              type="text"
-              name="title"
-              value="{{ post.title }}"
-              class="form-control form-control-lg border-0 ps-0 shadow-none"
-              placeholder="Digite o título..."
-              style="
-                font-size: 2.2rem;
-                font-weight: 800;
-                border-bottom: 2px solid #f1f5f9;
-                border-radius: 0;
-              "
-              required
-            >
+              <div>
+                <h5 class="fw-bold mb-1">
+                  Editor de Conteúdo
+                </h5>
+
+                <small class="text-muted">
+                  Modifique as informações do artigo abaixo
+                </small>
+              </div>
+
+              <button
+                type="submit"
+                class="btn btn-success px-4 fw-semibold"
+              >
+                <i class="bi bi-check-circle me-2"></i>
+                Salvar Alterações
+              </button>
+
+            </div>
 
           </div>
 
-          <!-- CATEGORIA -->
-          <div class="mb-4">
+          <div class="card-body p-4 p-lg-5">
 
-            <label
-              class="form-label fw-bold small text-uppercase text-muted"
-            >
-              Categoria
-            </label>
+            <!-- TÍTULO -->
+            <div class="mb-5">
 
-            <select
-              name="category_id"
-              class="form-select"
-              required
-            >
+              <label
+                class="form-label fw-bold text-uppercase small text-muted mb-3"
+              >
+                Título do Artigo
+              </label>
 
-              <option value="">
-                Selecione uma categoria...
-              </option>
+              <input
+                type="text"
+                name="title"
+                value="{{ post.title }}"
+                class="form-control border-0 border-bottom rounded-0 shadow-none px-0"
+                placeholder="Digite um título impactante..."
+                style="
+                  font-size: 2.4rem;
+                  font-weight: 800;
+                  background: transparent;
+                "
+                required
+              >
 
-              {% for category in categories %}
+            </div>
 
-                <option
-                  value="{{ category.id }}"
-                  {% if post.category_id == category.id %}
-                    selected
-                  {% endif %}
+            <div class="row g-4 mb-4 align-items-end">
+
+              <!-- CATEGORIA -->
+              <div class="col-md-4">
+
+                <label
+                  class="form-label fw-bold text-uppercase small text-muted"
                 >
-                  {{ category.name }}
-                </option>
+                  Categoria
+                </label>
 
-              {% endfor %}
+                <select
+                  name="category_id"
+                  class="form-select form-select-lg"
+                  required
+                >
 
-            </select>
+                  <option value="">
+                    Selecione uma categoria
+                  </option>
 
-          </div>
+                  {% for category in categories %}
 
-          <!-- IMAGEM -->
-          <div class="mb-4">
+                    <option 
+                      value="{{ category.id }}"
+                      {% if post.category_id == category.id %}selected{% endif %}
+                    >
+                      {{ category.name }}
+                    </option>
 
-            <label
-              class="form-label fw-bold small text-uppercase text-muted"
-            >
-              Imagem de Capa
-            </label>
+                  {% endfor %}
 
-            {% if post.image_url %}
+                </select>
 
-              <div class="mb-3">
+              </div>
 
-                <img
-                  src="{{ post.image_url }}"
-                  class="img-fluid rounded border"
-                  style="max-height: 250px; object-fit: cover;"
+              <!-- IMAGEM -->
+              <div class="col-md-4">
+
+                <label
+                  class="form-label fw-bold text-uppercase small text-muted d-block"
+                >
+                  Imagem de Capa
+                </label>
+
+                {% if post.image_url %}
+                  <div class="mb-2 position-relative" style="max-height: 120px; overflow: hidden; border-radius: 8px;">
+                    <img
+                      src="{{ post.image_url }}"
+                      class="img-fluid border"
+                      style="height: 60px; object-fit: cover; width: 100%; border-radius: 8px;"
+                      alt="Imagem atual"
+                    >
+                    <span class="badge bg-dark position-absolute bottom-0 end-0 m-1 opacity-75">Atual</span>
+                  </div>
+                {% endif %}
+
+                <input
+                  type="file"
+                  name="image"
+                  class="form-control form-control-lg"
+                  accept="image/*"
                 >
 
               </div>
 
-            {% endif %}
+              <!-- ORDEM -->
+              <div class="col-md-4">
 
-            <input
-              type="file"
-              name="image"
-              class="form-control"
-            >
+                <label
+                  class="form-label fw-bold text-uppercase small text-muted"
+                >
+                  Ordem de Exibição
+                </label>
 
-          </div>
+                <input
+                  type="number"
+                  name="order"
+                  class="form-control form-control-lg"
+                  value="{{ post.order or 0 }}"
+                  min="0"
+                  required
+                >
 
-          <!-- PREMIUM -->
-          <div
-            class="d-flex align-items-center gap-4 mb-4 py-3 border-bottom border-top"
-          >
+              </div>
 
-            <div class="form-check form-switch">
+            </div>
 
-              <input
-                class="form-check-input"
-                type="checkbox"
-                name="paid"
-                id="paidSwitch"
-                {% if post.is_paid %}
-                  checked
-                {% endif %}
-              >
+            <!-- CONFIGURAÇÕES -->
+            <div class="mb-5">
 
               <label
-                class="form-check-label fw-medium"
-                for="paidSwitch"
+                class="form-label fw-bold text-uppercase small text-muted mb-3"
               >
-                Conteúdo Premium
+                Configurações do Post
               </label>
+
+              <div class="row g-3">
+
+                <!-- PREMIUM -->
+                <div class="col-md-4">
+
+                  <div class="border rounded-4 p-4 h-100">
+
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+
+                      <div>
+                        <h6 class="fw-bold mb-1">
+                          Premium
+                        </h6>
+
+                        <small class="text-muted">
+                          Apenas assinantes
+                        </small>
+                      </div>
+
+                      <div class="form-check form-switch">
+
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          name="paid"
+                          id="paidSwitch"
+                          {% if post.is_paid %}checked{% endif %}
+                        >
+
+                      </div>
+
+                    </div>
+
+                    <p class="text-muted small mb-0">
+                      Restringe o acesso ao conteúdo apenas para membros premium.
+                    </p>
+
+                  </div>
+
+                </div>
+
+                <!-- DESTAQUE -->
+                <div class="col-md-4">
+
+                  <div class="border rounded-4 p-4 h-100">
+
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+
+                      <div>
+                        <h6 class="fw-bold mb-1">
+                          Destaque
+                        </h6>
+
+                        <small class="text-muted">
+                          Exibir na home
+                        </small>
+                      </div>
+
+                      <div class="form-check form-switch">
+
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          name="is_detach"
+                          id="detachSwitch"
+                          {% if post.is_detach %}checked{% endif %}
+                        >
+
+                      </div>
+
+                    </div>
+
+                    <p class="text-muted small mb-0">
+                      Mostra este artigo em áreas de destaque do site.
+                    </p>
+
+                  </div>
+
+                </div>
+
+                <!-- DRAFT -->
+                <div class="col-md-4">
+
+                  <div class="border rounded-4 p-4 h-100">
+
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+
+                      <div>
+                        <h6 class="fw-bold mb-1">
+                          Rascunho
+                        </h6>
+
+                        <small class="text-muted">
+                          Não publicar agora
+                        </small>
+                      </div>
+
+                      <div class="form-check form-switch">
+
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          name="is_draft"
+                          id="draftSwitch"
+                          {% if post.is_draft %}checked{% endif %}
+                        >
+
+                      </div>
+
+                    </div>
+
+                    <p class="text-muted small mb-0">
+                      Salva o conteúdo sem deixá-lo visível publicamente.
+                    </p>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+
+            <!-- CONTEÚDO -->
+            <div class="mb-4">
+
+              <div class="d-flex justify-content-between align-items-center mb-3">
+
+                <label
+                  class="form-label fw-bold text-uppercase small text-muted mb-0"
+                >
+                  Conteúdo do Artigo
+                </label>
+
+                <small class="text-muted">
+                  Editor avançado
+                </small>
+
+              </div>
+
+              <div class="border rounded-4 overflow-hidden">
+
+                <textarea
+                  id="summernote"
+                  name="content"
+                >{{ post.content | safe }}</textarea>
+
+              </div>
 
             </div>
 
           </div>
 
-          <!-- DESTAQUE -->
-          <div
-            class="d-flex align-items-center gap-4 mb-4 py-3 border-bottom border-top"
-          >
+          <!-- FOOTER -->
+          <div class="card-footer bg-white border-top px-4 py-4">
 
-            <div class="form-check form-switch">
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-center gap-3">
 
-              <input
-                class="form-check-input"
-                type="checkbox"
-                name="is_detach"
-                id="detachSwitch"
-                {% if post.is_detach %}
-                  checked
-                {% endif %}
-              >
+              <small class="text-muted">
+                Certifique-se de revisar o conteúdo antes de salvar.
+              </small>
 
-              <label
-                class="form-check-label fw-medium"
-                for="detachSwitch"
-              >
-                Conteúdo Destaque
-              </label>
+              <div class="d-flex gap-2">
+
+                <a
+                  href="{{ url_for('admin.dashboard') }}"
+                  class="btn btn-light border"
+                >
+                  Cancelar
+                </a>
+
+                <button
+                  type="submit"
+                  class="btn btn-success px-4 fw-semibold"
+                >
+                  <i class="bi bi-check-circle me-2"></i>
+                  Salvar Alterações
+                </button>
+
+              </div>
 
             </div>
-
-          </div>
-
-          <!-- CONTEÚDO -->
-          <div class="mb-4">
-
-            <label
-              class="form-label fw-bold small text-uppercase text-muted"
-            >
-              Conteúdo
-            </label>
-
-            <textarea
-              id="summernote"
-              name="content"
-            >{{ post.content | safe }}</textarea>
-
-          </div>
-
-          <!-- BOTÃO -->
-          <div class="border-top pt-4 d-flex justify-content-end">
-
-            <button
-              type="submit"
-              class="btn btn-success btn-lg px-5 fw-bold"
-            >
-              Salvar Alterações
-            </button>
 
           </div>
 
@@ -221,4 +385,5 @@
   </div>
 
 </div>
+
 {% endblock %}

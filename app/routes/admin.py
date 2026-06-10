@@ -31,6 +31,10 @@ def create_post():
                 content = request.form.get('content')
                 category_id = request.form.get('category_id')
                 category = Category.query.get(category_id)
+                try:
+                    order = int(request.form.get('order', 0))
+                except (ValueError, TypeError):
+                    order = 0
 
                 image = request.files.get('image')
                 url = None
@@ -43,7 +47,8 @@ def create_post():
                     category=category,
                     is_paid=True if request.form.get('paid') else False,
                     is_detach=True if request.form.get('is_detach') else False,
-                    image_url='/static/img/default-post.jpg'
+                    image_url='/static/img/default-post.jpg',
+                    order=order
                 )
 
                 db.session.add(post)
@@ -91,6 +96,12 @@ def update_post(id):
 
             if category_id:
                 post.category_id = int(category_id)
+
+            # Ordem
+            try:
+                post.order = int(request.form.get('order', 0))
+            except (ValueError, TypeError):
+                pass
 
             # Upload da imagem
             image = request.files.get('image')

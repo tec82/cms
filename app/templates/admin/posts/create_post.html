@@ -96,7 +96,7 @@
             <div class="row g-4 mb-4">
 
               <!-- CATEGORIA -->
-              <div class="col-md-6">
+              <div class="col-md-4">
 
                 <label
                   class="form-label fw-bold text-uppercase small text-muted"
@@ -127,7 +127,7 @@
               </div>
 
               <!-- IMAGEM -->
-              <div class="col-md-6">
+              <div class="col-md-4">
 
                 <label
                   class="form-label fw-bold text-uppercase small text-muted"
@@ -140,6 +140,26 @@
                   name="image"
                   class="form-control form-control-lg"
                   accept="image/*"
+                >
+
+              </div>
+
+              <!-- ORDEM -->
+              <div class="col-md-4">
+
+                <label
+                  class="form-label fw-bold text-uppercase small text-muted"
+                >
+                  Ordem de Exibição
+                </label>
+
+                <input
+                  type="number"
+                  name="order"
+                  class="form-control form-control-lg"
+                  value="0"
+                  min="0"
+                  required
                 >
 
               </div>
