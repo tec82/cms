@@ -276,7 +276,6 @@ def process_checkout():
     amount = float(request.form.get('amount', 29.90))
     provider = request.form.get('provider', 'stripe')
 
-    # precisa criar um servico para criar pagamento, pix, cartão, boleto e verificar se ele pagou o mes.
     payment = Payment(
         user_id=current_user.id,
         amount=amount,
@@ -284,6 +283,7 @@ def process_checkout():
         provider=provider,
         created_at=datetime.now(timezone.utc)
     )
+    # chamar stripe.py passando payment
 
     db.session.add(payment)
     db.session.commit()

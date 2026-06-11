@@ -17,21 +17,6 @@
           Faça parte do clube de membros para desbloquear artigos exclusivos, trilhas de aprendizagem avançadas e
           progresso personalizado.
         </p>
-
-        {% if post or category %}
-        <div class="alert alert-primary bg-primary-subtle border-0 rounded-4 p-3 d-inline-block shadow-sm">
-          <span class="fw-semibold text-primary">
-            <i class="bi bi-unlock-fill me-2"></i>Você está desbloqueando:
-          </span>
-          <span class="text-dark-emphasis fw-bold ms-1">
-            {% if post %}
-            "{{ post.title }}" (Artigo)
-            {% elif category %}
-            "{{ category.name }}" (Trilha)
-            {% endif %}
-          </span>
-        </div>
-        {% endif %}
       </div>
 
       <!-- MAIN CONTENT ROW -->
