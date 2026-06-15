@@ -1,9 +1,13 @@
+
 from flask import Blueprint, render_template, request, abort, redirect, url_for, flash
 from flask_login import current_user, login_required
 from models import PostView, Favorite, Post, Category, TrailProgress, db, Payment
 from sqlalchemy import func
 from datetime import datetime, timezone
 import json
+import requests
+
+
 
 site_bp = Blueprint('site', __name__)
 
@@ -260,44 +264,85 @@ def checkout():
 
     post = None
     category = None
+    user = current_user
 
     if post_id:
         post = Post.query.get(post_id)
     if category_id:
         category = Category.query.get(category_id)
 
-    return render_template('site/checkout.html', post=post, category=category)
+    return render_template('site/checkout.html', post=post, category=category, user=user)
 
 @site_bp.route('/checkout/process', methods=['POST'])
 @login_required
 def process_checkout():
+
     post_id = request.form.get('post_id')
-    category_id = request.form.get('category_id')
-    amount = float(request.form.get('amount', 29.90))
-    provider = request.form.get('provider', 'stripe')
+    category_id = request.form.get('category_id')   
+        
+    cpf = request.form.get('cpf')  
+    cellphone = request.form.get('cellphone')      
 
-    payment = Payment(
-        user_id=current_user.id,
-        amount=amount,
-        status='paid',
-        provider=provider,
-        created_at=datetime.now(timezone.utc)
-    )
-    # chamar stripe.py passando payment
+    try:
+        # Funcao para charma o gateway
+        base_url = "https://api.abacatepay.com/v2/"
 
-    db.session.add(payment)
-    db.session.commit()
+        headers = {
+            "Authorization": "Bearer abc_dev_hNHFxMcAKu4JjwgfQeeF62fJ",
+            "Content-Type": "application/json"
+        }
 
-    flash('Pagamento simulado com sucesso! Bem-vindo ao Premium 🚀', 'success')
+        customer_payload = {
+            "email": current_user.email,
+            "name": current_user.username,
+            "taxId": cpf,
+            "cellphone": cellphone            
+        }                
 
-    if post_id:
-        post = Post.query.get(post_id)
-        if post:
-            return redirect(url_for('site.post_detail', slug=post.slug))
+        response = requests.post(base_url+"customers/create", json=customer_payload, headers=headers)
+        print(response)
+        response_customer_json = response.json()
 
-    if category_id:
-        category = Category.query.get(category_id)
-        if category:
-            return redirect(url_for('site.datail_trilhas', slug=category.slug))
+        if response_customer_json.get('success'):
+            customer_id = response_customer_json['data']['id']
+            subscription_payload = {                 
+                "items": [
+                    { "id": "prod_00pmzw6CJ5SWhms4Qt4GnSUF", "quantity": 1 }
+                ],
+                "customerId": customer_id,                
+                "completionUrl": url_for('dashboard.index', _external=True),
+                "methods": ["CARD"]                 
+            }                
 
-    return redirect(url_for('dashboard.index'))
+            response = requests.post(base_url+"subscriptions/create", json=subscription_payload, headers=headers)
+            subscription_payload_json = response.json()
+            print("asfasdfasdfasdf")
+            print(response)
+
+            if subscription_payload_json.get('success'):
+                # Registra o pagamento localmente
+                payment = Payment(
+                    user_id=current_user.id,
+                    amount=29.90,
+                    status='paid',
+                    provider="abacatepay",
+                    created_at=datetime.now(timezone.utc)
+                )  
+                db.session.add(payment)
+                db.session.commit()
+
+                subscription_url = subscription_payload_json['data']['url']
+                return redirect(subscription_url)
+            else:
+                print(f"AbacatePay subscription creation failed: {subscription_payload_json.get('error')}")
+                return redirect(url_for('dashboard.index'))
+        else:
+            print(f"AbacatePay customer creation failed: {response_customer_json.get('error')}")
+            return redirect(url_for('dashboard.index'))
+        
+    except Exception as e:
+        print(f"Gateway payment call log: {e}")
+        flash('Pagamento simulado com sucesso (AbacatePay indisponível no momento). Bem-vindo ao Premium! 🚀', 'error')
+        return redirect(url_for('dashboard.index'))
+
+   

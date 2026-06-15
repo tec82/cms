@@ -66,7 +66,6 @@ def login_google():
     return google.authorize_redirect(redirect_uri)
 
 
-
 @auth_bp.route('/google/callback')
 def google_callback():
 
